@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plexus - Home</title>
+</head>
+<body>
+
+
+<form id="form" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="file" id="file" name="file" accept=".csv" />
+{#    {{ form.as_p }}#}
+<input type="submit" value="Upload">
+</form>
+</body>
+</html>
