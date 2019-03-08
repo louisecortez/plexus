@@ -22,10 +22,33 @@ class Barangay(models.Model):
     geojson = models.TextField(default="")
     population = models.IntegerField(default=0)
     income = models.FloatField(default=0.0)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
+    spatial = models.FloatField(default=0.0)
+    temporal = models.FloatField(default=0.0)
+    economic = models.FloatField(default=0.0)
+    physical = models.FloatField(default=0.0)
+    psychological = models.FloatField(default=0.0)
+    physiological = models.FloatField(default=0.0)
+    sustainability = models.FloatField(default=0.0)
+    performance = models.FloatField(default=0.0)
+    fairness = models.FloatField(default=0.0)
+
     def json(self):
-        j = ast.literal_eval(self.geojson)
+        j = {'type':'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         j['properties']['income'] = self.income
         j['properties']['population'] = self.population
+        j['properties']['latitude'] = self.latitude
+        j['properties']['longitude'] = self.longitude
+        j['properties']['spatial'] = self.spatial
+        j['properties']['temporal'] = self.temporal
+        j['properties']['economic'] = self.economic
+        j['properties']['physical'] = self.physical
+        j['properties']['psychological'] = self.psychological
+        j['properties']['physiological'] = self.physiological
+        j['properties']['sustainability'] = self.sustainability
+        j['properties']['performance'] = self.performance
+        j['properties']['fairness'] = self.fairness
         return j
 
 

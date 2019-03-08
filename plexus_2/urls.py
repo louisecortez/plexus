@@ -15,14 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from admin_console import views
 
 urlpatterns = [
     path('',views.index),
-    path('upload/', views.upload_file),
+    path('upload/', views.upload),
     path('admin/', admin.site.urls),
     path('datafiles/', views.datafiles.as_view()),
     path('data.json', views.brgy.as_view()),
+    path('accounts/login/', views.login_view),
     # path('list/', views.list.as_view())
 ]
