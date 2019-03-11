@@ -46,6 +46,23 @@ class CityGeojson(APIView):
 
         return HttpResponse(json.dumps(d),content_type='application/json',status=200)
 
+class UploadDataFile(View):
+    def get(self, request):
+        form = UploadFileForm(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            file = form.cleaned_data.get('file')
+            print(file)
+            handle_uploaded_file(request.FILES['file'])
+            return redirect('/')
+
+        context = {
+            'form': form,
+        }
+        return render(request, 'admin_console/home.html', context)
+
+    def post(self, request):
+        pass
+
 @login_required
 def upload_file(request):
     if request.method == 'POST':
