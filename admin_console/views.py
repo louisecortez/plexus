@@ -37,9 +37,9 @@ class datafiles(APIView):
         serializer = DataFileSerializer(files, many=True)
         return Response(serializer.data)
 
-class brgy(APIView):
-    def get(self, request):
-        brgys = Barangay.objects.filter(city__name='Manila')
+class CityGeojson(APIView):
+    def get(self, request, city):
+        brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
         d = {"type":"FeatureCollection", 'features' : []}
         for brgy in brgys:
             d['features'].append(brgy.json())

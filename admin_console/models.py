@@ -83,6 +83,14 @@ class HouseholdMember(models.Model):
     addCost = models.IntegerField(default=0)
 
 
+class Amenities(models.Model):
+    barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE)
+    name = models.CharField(default="", max_length=255)
+    type = models.CharField(default="", max_length=255)
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
+
+
 class Indicator(models.Model):
     name = models.CharField(default="", max_length=255)
     description = models.CharField(default="", max_length=255)
