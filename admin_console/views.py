@@ -11,7 +11,8 @@ import json
 
 from admin_console.forms import UploadFileForm, UserLoginForm
 from admin_console.serializers import DataFileSerializer
-from .models import DataFile, Barangay
+from .models import DataFile, Barangay, Amenity, City
+
 
 @login_required
 def index(request):
@@ -37,7 +38,7 @@ class datafiles(APIView):
         serializer = DataFileSerializer(files, many=True)
         return Response(serializer.data)
 
-class CityGeojson(APIView):
+class BarangayGeojson(APIView):
     def get(self, request, city):
         brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
         d = {"type":"FeatureCollection", 'features' : []}
@@ -45,6 +46,17 @@ class CityGeojson(APIView):
             d['features'].append(brgy.json())
 
         return HttpResponse(json.dumps(d),content_type='application/json',status=200)
+
+class AmenityGeojson(APIView):
+    def get(self, request, city):
+        amenities = Amenity.objects.filter(barangay__city__name__iexact=city.replace('_', ' '))
+        # d = {"type": "FeatureCollection", 'features': []}
+        s = ','.join(['name', 'latitude', 'longitude', 'barangay', 'type', 'icon']) + '\n'
+        for amenity in amenities:
+            s += amenity.row() + '\n'
+            # d['features'].append(amenity.json())
+
+        return HttpResponse(s, content_type='application/json', status=200)
 
 class UploadDataFile(View):
     def get(self, request):
@@ -138,5 +150,12 @@ def login_view(request):
     }
     return render(request, 'admin_console/login.html', context)
 
-
+@login_required
+def get_cities(request):
+    cities = City.objects.all()
+    context = {
+        'cities': cities,
+    }
+    return render(request, 'admin_console/cities.html', context)
+    pass
 

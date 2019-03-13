@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
 
-
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 

@@ -36,7 +36,7 @@ class Barangay(models.Model):
     fairness = models.FloatField(default=0.0)
 
     def json(self):
-        j = {'type':'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
+        j = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         j['properties']['income'] = self.income
         j['properties']['population'] = self.population
         j['properties']['latitude'] = self.latitude
@@ -91,6 +91,25 @@ class Amenity(models.Model):
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
     osm_id = models.CharField(default="", max_length=255)
+
+    def json(self):
+        j = {
+            'type': 'Feature',
+            'geometry': {
+                "type": "Point",
+                "coordinates": [self.longitude, self.latitude]
+            },
+            'properties': {
+                'name': self.name,
+                'barangay': self.barangay.name,
+                'type': self.type,
+                'icon': 'place'
+            }
+        }
+
+        return j
+    def row(self):
+        return ','.join([self.name, str(self.latitude), str(self.longitude), self.barangay.name, self.type, 'place'])
 
 
 class Indicator(models.Model):

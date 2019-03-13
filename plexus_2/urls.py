@@ -24,7 +24,10 @@ urlpatterns = [
     path('upload/', views.upload),
     path('admin/', admin.site.urls),
     path('datafiles/', views.datafiles.as_view()),
-    path('city/<slug:city>/geo.json', views.CityGeojson.as_view()),
+    path('barangays/<slug:city>/geo.json', views.BarangayGeojson.as_view()),
+    path('amenities/<slug:city>/geo.json', views.AmenityGeojson.as_view()),
+    path('regions/', views.AmenityGeojson.as_view()),
+    path('cities/', views.get_cities),
     path('accounts/login/', views.login_view),
     # path('list/', views.list.as_view())
 ]
