@@ -1,4 +1,5 @@
 import ast
+from statistics import mean
 
 from django.db import models
 
@@ -9,12 +10,33 @@ class DataFile(models.Model):
     description = models.TextField(default="")
 
 
+class Region(models.Model):
+    name = models.CharField(default="", max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Province(models.Model):
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    name = models.CharField(default="", max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 class City(models.Model):
+    # province = models.ForeignKey(Province, on_delete=models.CASCADE)
     name = models.CharField(default="", max_length=255)
     region = models.CharField(default="", max_length=255)
-    province = models.CharField(default="", max_length=255)
-    geojson = models.TextField(default="")
+    prov = models.CharField(default="", max_length=255)
     is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    def toggle_active(self):
+        self.is_active = not self.is_active
 
 
 class Barangay(models.Model):
@@ -35,12 +57,18 @@ class Barangay(models.Model):
     performance = models.FloatField(default=0.0)
     fairness = models.FloatField(default=0.0)
 
+    def __str__(self):
+        return self.name
+
     def json(self):
         j = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         j['properties']['income'] = self.income
         j['properties']['population'] = self.population
         j['properties']['latitude'] = self.latitude
         j['properties']['longitude'] = self.longitude
+        j['properties']['td'] = round(mean(
+            [self.spatial, self.temporal, self.economic, self.physical, self.psychological, self.physiological,
+             self.sustainability, self.performance, self.fairness]), 6)
         j['properties']['spatial'] = self.spatial
         j['properties']['temporal'] = self.temporal
         j['properties']['economic'] = self.economic
@@ -92,6 +120,9 @@ class Amenity(models.Model):
     longitude = models.FloatField(default=0.0)
     osm_id = models.CharField(default="", max_length=255)
 
+    def __str__(self):
+        return self.name
+
     def json(self):
         j = {
             'type': 'Feature',
@@ -108,6 +139,7 @@ class Amenity(models.Model):
         }
 
         return j
+
     def row(self):
         return ','.join([self.name, str(self.latitude), str(self.longitude), self.barangay.name, self.type, 'place'])
 
