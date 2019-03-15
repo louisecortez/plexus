@@ -16,27 +16,39 @@ class Region(models.Model):
     def __str__(self):
         return self.name
 
+    def provinces(self):
+        return Province.objects.filter(region__id=self.id).order_by('name')
+
 
 class Province(models.Model):
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     name = models.CharField(default="", max_length=255)
+    sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
         return self.name
 
+    def cities(self):
+        return City.objects.filter(province__id=self.id).order_by('name')
+
 
 class City(models.Model):
-    # province = models.ForeignKey(Province, on_delete=models.CASCADE)
+    province = models.ForeignKey(Province, on_delete=models.CASCADE)
     name = models.CharField(default="", max_length=255)
-    region = models.CharField(default="", max_length=255)
-    prov = models.CharField(default="", max_length=255)
     is_active = models.BooleanField(default=False)
+    sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
         return self.name
 
     def toggle_active(self):
         self.is_active = not self.is_active
+
+    def json(self):
+        return {
+            'id': self.id,
+            'name': self.province.name + " - " + self.name
+        }
 
 
 class Barangay(models.Model):
@@ -56,12 +68,14 @@ class Barangay(models.Model):
     sustainability = models.FloatField(default=0.0)
     performance = models.FloatField(default=0.0)
     fairness = models.FloatField(default=0.0)
+    sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
         return self.name
 
     def json(self):
         j = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
+        j['properties']['name'] = self.name
         j['properties']['income'] = self.income
         j['properties']['population'] = self.population
         j['properties']['latitude'] = self.latitude
@@ -118,7 +132,7 @@ class Amenity(models.Model):
     type = models.CharField(default="", max_length=255)
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
-    osm_id = models.CharField(default="", max_length=255)
+    sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
         return self.name

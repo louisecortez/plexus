@@ -11,7 +11,7 @@ import json
 
 from admin_console.forms import UploadFileForm, UserLoginForm
 from admin_console.serializers import DataFileSerializer
-from .models import DataFile, Barangay, Amenity, City
+from .models import DataFile, Barangay, Amenity, City, Region, Province
 
 
 @login_required
@@ -29,6 +29,21 @@ def householdmembers(request):
 
 def barangay(request):
     pass
+
+class GetActiveCities(APIView):
+    def get(self, request):
+        # brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
+        # d = {"type":"FeatureCollection", 'features' : []}
+        # for brgy in brgys:
+        #     d['features'].append(brgy.json())
+
+        cities = City.objects.filter(is_active=True).order_by('province__name', 'name')
+
+        li = []
+        for c in cities:
+            li.append(c.json())
+
+        return HttpResponse(json.dumps(li),content_type='application/json',status=200)
 
 # Create your views here.
 
@@ -151,10 +166,24 @@ def login_view(request):
     return render(request, 'admin_console/login.html', context)
 
 @login_required
-def get_cities(request):
-    cities = City.objects.all()
+def get_provinces(request):
+    regions = Region.objects.all()
     context = {
-        'cities': cities,
+        'regions': regions,
+    }
+    return render(request, 'admin_console/province.html', context)
+    pass
+
+@login_required
+def get_cities(request, id):
+    print(id)
+    print('hello')
+    province = Province.objects.get(id=id)
+    print(province)
+    print('hello')
+    # cities = City.objects.filter(province__id=id)
+    context = {
+        'province': province
     }
     return render(request, 'admin_console/cities.html', context)
     pass

@@ -5,7 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    {% for city in cities %}
+    <h1>{{ province.region.name }} >> {{ province.name }}</h1>
+    {% for city in province.cities %}
         <div>{{ city.name }}</div>
     {% endfor %}
 </body>

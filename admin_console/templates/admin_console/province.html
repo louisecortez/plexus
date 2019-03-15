@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% for region in regions %}
+        <div>{{ region.name }}</div>
+        <ul>
+        {% for province in region.provinces %}
+            <li><a href="{{ province.id }}/">{{ province.name }}</a></li>
+{#            {% for city in province.cities %}#}
+{#                <div>&nbsp;&nbsp;{{ city.name }}</div>#}
+{#            {% endfor %}#}
+        {% endfor %}
+        </ul>
+    {% endfor %}
+</body>
+</html>
