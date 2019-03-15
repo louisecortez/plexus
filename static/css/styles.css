@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400,500');
+
+/* GENERAL CSS */
+html, body {
+    height: 100%;
+    background-color: #101010;
+}
+
+body {
+    margin: 0;
+    background-color: #f4f4f4;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
+    color: #F4F4F4;
+    text-align: center;
+}
+
+input {
+    width: 40%;
+    padding: 8px;
+    margin: 5px;
+    border: 1px #979797 solid;
+    border-radius: 50px;
+}
+
+input[type="text"], input[type="password"], textarea {
+    background-color: #000000;
+    border: 1px #414141 solid;
+    color: #ffffff;
+}
+
+input[type="text"]:active, input[type="password"]:active, textarea:active {
+    background-color: #000000;
+    border: 1px #414141 solid;
+    color: #ffffff;
+}
+
+/* GENERAL HEADER CSS */
+.w3-top {
+    top: 0;
+    background-color: #000000;
+}
+
+.w3-bar {
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.w3-wide {
+    letter-spacing: 2px;
+}
+
+.w3-padding {
+    padding:8px 16px;
+}
+
+.w3-bar-item {
+    padding:8px 16px;
+    float:left;
+    width:auto;
+    border:none;
+    display:block;
+    outline:0;
+    display:block;
+    text-align:left;
+    white-space:normal;
+}
+
+w3-right {
+    float:right;
+}
+
+.w3-button {
+    border:none;
+    display:inline-block;
+    padding:8px 16px;
+    vertical-align:middle;
+    overflow:hidden;
+    text-decoration:none;
+    color:inherit;
+    background-color:inherit;
+    text-align:center;
+    cursor:pointer;
+    white-space:nowrap
+}
+
+.page-title {
+    color: #575757;
+    font-weight: 400;
+    font-size: 1.5em;
+    margin: 10px;
+}
+
+.header-right {
+    margin-top: -38px;
+    margin-right: 20px;
+    float: right;
+    color:#2aabd2;
+}
+
+/* LOGIN PAGE CSS*/
+.login-button {
+    width: 30%;
+    background-color: #791d85;
+    border: none;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
+    color: #F4F4F4;
+}
+
+.login-button:hover {
+    background-color:#ff2579;
+    transition-duration:0.5s;
+    transition-timing-function:ease;
+}
+
+.login-container {
+    width: 60%;
+    height: 100%;
+    padding: 20px;
+    padding-left: 50px;
+    background-color: #101010;
+    text-align: left;
+}
+
+.login-plexus-text {
+    width: 40%;
+    height: 100%;
+    background-image:
+            linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8) ),
+            url("/static/img/city.jpg");
+}
+
+.login-fields {
+
+}
+
+.login-page {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.login-header {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+}
+
+.login-header-big {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    font-size: 4em;
+}
+
+/* HOME CSS*/
+.home-upload-page {
+    text-align: center;
+}
+
+.home-upload-container {
+    width:50%;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.upload-box {
+    border: 2px dashed #bbb;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 50px;
+    text-align: center;
+    font: 21pt bold arial;
+    color: #bbb;
+}
+
+/* INDEX CSS*/
+.index-page {
+    height: 100%;
+}
+
+.index-btn-container {
+    margin-top: 40px;
+}
+
+.index-buttons {
+    margin-top: 50px;
+    padding: 10px;
+    color:#575757;
+    border: 1px #575757 solid;
+    border-radius: 50px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.index-buttons:hover {
+    background-color:#791d85;
+    border:none;
+    color:#F4F4F4;
+    transition-duration:0.5s;
+    transition-timing-function:ease;
+}
+
+/* CITIES CSS */
+.cities-page {
+    background-color: #F4F4F4;
+}
+
+.city-name {
+    color: #000000;
+}

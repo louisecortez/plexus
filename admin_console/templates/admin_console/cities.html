@@ -2,11 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <title>Cities</title>
 </head>
 <body>
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
+    <div class="w3-right w3-hide-small">
+      <a href="#projects" class="w3-bar-item w3-button">Link</a>
+      <a href="#about" class="w3-bar-item w3-button">Link</a>
+      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+    </div>
+  </div>
+
+    <div class="header-right">Hello, username!</div>
+</div>
+
+<div class="cities-page">
     {% for city in cities %}
-        <div>{{ city.name }}</div>
+        <div class="city-name">{{ city.name }} - {{ city.region }}</div>
     {% endfor %}
+</div>
 </body>
 </html>

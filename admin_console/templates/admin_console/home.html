@@ -2,16 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Plexus - Home</title>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <title>PLEXUS - Home</title>
 </head>
 <body>
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
+    <div class="w3-right w3-hide-small">
+      <a href="#projects" class="w3-bar-item w3-button">Link</a>
+      <a href="#about" class="w3-bar-item w3-button">Link</a>
+      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+    </div>
+  </div>
 
+    <div class="header-right">Hello, username!</div>
+</div>
 
-<form id="form" method="post" enctype="multipart/form-data">
-{% csrf_token %}
-{#<input type="file" id="file" name="file" accept=".csv" />#}
-    {{ form.as_p }}
-<input type="submit" value="Upload">
-</form>
+<div class="home-upload-page">
+    <div class="home-upload-container">
+        <div class="page-title">Upload File</div>
+        <form id="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {#<input type="file" id="file" name="file" accept=".csv" />#}
+            <div class="upload-box">{{ form.as_p }}</div>
+            <input type="submit" class="index-buttons" value="Upload">
+        </form>
+    </div>
+</div>
 </body>
 </html>
