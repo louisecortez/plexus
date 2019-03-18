@@ -35,6 +35,7 @@ urlpatterns = [
     path('cities/<int:id>/', views.CityList.as_view()),
     path('get_active_cities/', views.GetActiveCities.as_view()),
     path('accounts/login/', views.login_view),
+    path('accounts/logout/', views.logout_view),
     # path('list/', views.list.as_view())
 ]
 

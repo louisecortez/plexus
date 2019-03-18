@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
@@ -32,11 +32,6 @@ def barangay(request):
 
 class GetActiveCities(APIView):
     def get(self, request):
-        # brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
-        # d = {"type":"FeatureCollection", 'features' : []}
-        # for brgy in brgys:
-        #     d['features'].append(brgy.json())
-
         cities = City.objects.filter(is_active=True).order_by('province__name', 'name')
 
         li = []
@@ -44,8 +39,6 @@ class GetActiveCities(APIView):
             li.append(c.json())
 
         return HttpResponse(json.dumps(li),content_type='application/json',status=200)
-
-# Create your views here.
 
 class datafiles(APIView):
     def get(self, request):
@@ -79,6 +72,7 @@ class AmenityGeojson(APIView):
 
         return HttpResponse(s, content_type='application/json', status=200)
 
+@login_required
 class UploadDataFile(View):
     def get(self, request):
         form = UploadFileForm(request.POST or None, request.FILES or None)
@@ -110,6 +104,7 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'admin_console/home.html', {'form': form})
 
+@login_required
 def handle_uploaded_file(f):
 
     print(f.read())
@@ -133,26 +128,6 @@ def upload(request):
         'form': form,
     }
     return render(request, 'admin_console/home.html', context)
-
-
-# class UserLogin(View):
-#     template_name = 'admin_console/login.html'
-#
-#     def get(self, request):
-#         user = UserLoginForm()
-#         return render(request, self.template_name, {'form': user})
-#
-#     def post(self, request):
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(request, username=username, password=password)
-#         form = UploadFileForm()
-#         if user is not None:
-#             login(request, user)
-#             return render(request, 'admin_console/index.html', {'form': form})
-#         else:
-#             # Return an 'invalid login' error message.
-#             return render(request, self.template_name, {'form': user})
 
 def login_view(request):
     next = request.GET.get('next')
@@ -192,6 +167,7 @@ def get_cities(request, id):
     pass
 
 class CityList(View):
+    @login_required
     def get(self, request, id):
         province = Province.objects.get(id=id)
         # cities = City.objects.filter(province__id=id)
@@ -201,6 +177,7 @@ class CityList(View):
         }
         return render(request, 'admin_console/cities.html', context)
 
+    @login_required
     def post(self, request,id):
         cities = [int(id) for id in request.POST.getlist('citie')]
         province = Province.objects.get(id=id)
@@ -212,3 +189,7 @@ class CityList(View):
                 city.is_active = False
                 city.save()
         return redirect('/')
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('/')
