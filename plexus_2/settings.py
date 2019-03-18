@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'plexus2',
         'USER': 'postgres',
-        'PASSWORD': 'p@ssword',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -128,4 +128,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+

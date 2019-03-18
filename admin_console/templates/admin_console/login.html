@@ -2,15 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/styles.css"/>
     <title>PLEXUS - Login</title>
 </head>
 <body>
-<form class="login" method="POST">
-
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <input type="submit" value="Log in"/>
-</form>
+<div class="login-page">
+    <div class="login-plexus-text">
+        <h1 class="login-header-big">Plexus</h1>
+    </div>
+    <div class="login-container">
+        <h1 class="login-header">Admin Login</h1>
+        <div class="login-fields">
+            <form class="login" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="login-button" value="LOG IN"/>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
