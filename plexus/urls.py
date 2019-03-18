@@ -1,4 +1,4 @@
-"""plexus_2 URL Configuration
+"""plexus URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -32,7 +32,7 @@ urlpatterns = [
     path('amenities/<slug:city>/geo.csv', views.AmenityGeojson.as_view()),
     path('regions/', views.AmenityGeojson.as_view()),
     path('cities/', views.get_provinces),
-    path('cities/<int:id>/', views.get_cities),
+    path('cities/<int:id>/', views.CityList.as_view()),
     path('get_active_cities/', views.GetActiveCities.as_view()),
     path('accounts/login/', views.login_view),
     # path('list/', views.list.as_view())

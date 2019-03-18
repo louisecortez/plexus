@@ -7,9 +7,9 @@
 </head>
 <body>
 <!--
-    <h1>{{ province.region.name }} >> {{ province.name }}</h1>
-    {% for city in province.cities %}
-        <div>{{ city.name }}</div>
+{#    <h1>{{ province.region.name }} >> {{ province.name }}</h1>#}
+{#    {% for city in province.cities %}#}
+{#        <div>{{ city.name }}</div>#}
 -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -25,10 +25,16 @@
 </div>
 
 <div class="cities-page">
-    {% for city in cities %}
-        <div class="city-name">{{ city.name }} - {{ city.region }}</div>
+<h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
+<hr>
 
+<form id="form" method="post">
+{% csrf_token %}
+    {% for city in province.cities %}
+        <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
     {% endfor %}
+<input type="submit" value="Save">
+</form>
 </div>
 </body>
 </html>

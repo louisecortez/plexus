@@ -182,15 +182,33 @@ def get_provinces(request):
 
 @login_required
 def get_cities(request, id):
-    print(id)
-    print('hello')
     province = Province.objects.get(id=id)
-    print(province)
-    print('hello')
     # cities = City.objects.filter(province__id=id)
+
     context = {
         'province': province
     }
     return render(request, 'admin_console/cities.html', context)
     pass
 
+class CityList(View):
+    def get(self, request, id):
+        province = Province.objects.get(id=id)
+        # cities = City.objects.filter(province__id=id)
+
+        context = {
+            'province': province
+        }
+        return render(request, 'admin_console/cities.html', context)
+
+    def post(self, request,id):
+        cities = [int(id) for id in request.POST.getlist('citie')]
+        province = Province.objects.get(id=id)
+        for city in province.cities():
+            if city.id in cities and not city.is_active:
+                city.is_active = True
+                city.save()
+            elif city.id not in cities and city.is_active:
+                city.is_active = False
+                city.save()
+        return redirect('/')
