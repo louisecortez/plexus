@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
@@ -32,7 +33,7 @@ urlpatterns = [
     path('amenities/<slug:city>/geo.csv', views.AmenityGeojson.as_view()),
     path('regions/', views.AmenityGeojson.as_view()),
     path('cities/', views.get_provinces),
-    path('cities/<int:id>/', views.CityList.as_view()),
+    path('cities/<int:id>/', login_required(views.CityList.as_view())),
     path('get_active_cities/', views.GetActiveCities.as_view()),
     path('accounts/login/', views.login_view),
     path('accounts/logout/', views.logout_view),
