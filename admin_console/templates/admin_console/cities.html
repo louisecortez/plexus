@@ -6,6 +6,11 @@
     <title>Cities</title>
 </head>
 <body>
+<!--
+    <h1>{{ province.region.name }} >> {{ province.name }}</h1>
+    {% for city in province.cities %}
+        <div>{{ city.name }}</div>
+-->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
@@ -22,6 +27,7 @@
 <div class="cities-page">
     {% for city in cities %}
         <div class="city-name">{{ city.name }} - {{ city.region }}</div>
+
     {% endfor %}
 </div>
 </body>
