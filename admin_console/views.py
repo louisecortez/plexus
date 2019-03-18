@@ -55,7 +55,10 @@ class datafiles(APIView):
 
 class BarangayGeojson(APIView):
     def get(self, request, city):
-        brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
+        if isinstance(city, int):
+            brgys = Barangay.objects.filter(city__id=city)
+        else:
+            brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
         d = {"type":"FeatureCollection", 'features' : []}
         for brgy in brgys:
             d['features'].append(brgy.json())
@@ -64,7 +67,10 @@ class BarangayGeojson(APIView):
 
 class AmenityGeojson(APIView):
     def get(self, request, city):
-        amenities = Amenity.objects.filter(barangay__city__name__iexact=city.replace('_', ' '))
+        if isinstance(city, int):
+            amenities = Amenity.objects.filter(barangay__city__id=city)
+        else:
+            amenities = Amenity.objects.filter(barangay__city__name__iexact=city.replace('_', ' '))
         # d = {"type": "FeatureCollection", 'features': []}
         s = ','.join(['name', 'latitude', 'longitude', 'barangay', 'type', 'icon']) + '\n'
         for amenity in amenities:

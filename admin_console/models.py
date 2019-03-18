@@ -73,6 +73,11 @@ class Barangay(models.Model):
     def __str__(self):
         return self.name
 
+    def get_td(self):
+        return round(mean(
+            [self.spatial, self.temporal, self.economic, self.physical, self.psychological, self.physiological,
+             self.sustainability, self.performance, self.fairness]), 6)
+
     def json(self):
         j = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         j['properties']['name'] = self.name
@@ -80,7 +85,7 @@ class Barangay(models.Model):
         j['properties']['population'] = self.population
         j['properties']['latitude'] = self.latitude
         j['properties']['longitude'] = self.longitude
-        j['properties']['td'] = round(mean(
+        j['properties']['desirability'] = round(mean(
             [self.spatial, self.temporal, self.economic, self.physical, self.psychological, self.physiological,
              self.sustainability, self.performance, self.fairness]), 6)
         j['properties']['spatial'] = self.spatial
@@ -93,6 +98,12 @@ class Barangay(models.Model):
         j['properties']['performance'] = self.performance
         j['properties']['fairness'] = self.fairness
         return j
+
+    def row(self):
+        col = [
+            str({'type': 'Feature', 'geometry': ast.literal_eval(self.geojson)})
+        ]
+        pass
 
 
 class Household(models.Model):
@@ -155,7 +166,7 @@ class Amenity(models.Model):
         return j
 
     def row(self):
-        return ','.join([self.name, str(self.latitude), str(self.longitude), self.barangay.name, self.type, 'place'])
+        return ','.join(['"'+self.name+'"', str(self.latitude), str(self.longitude), '"'+self.barangay.name+'"', '"'+self.type+'"', 'place'])
 
 
 class Indicator(models.Model):
