@@ -7,24 +7,31 @@
 </head>
 <body>
 <!-- Navbar (sit on top) -->
+<!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
     <div class="w3-right w3-hide-small">
-      <a href="#projects" class="w3-bar-item w3-button">Link</a>
-      <a href="#about" class="w3-bar-item w3-button">Link</a>
-      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+      <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+      <a href="/cities" class="w3-bar-item w3-button">View Cities</a>
+      <a href="/" class="w3-bar-item w3-button">View Data</a>
     </div>
   </div>
 
-    <div class="header-right">Hello, username!</div> <a class= "index-buttons" href="/accounts/logout">Logout</a>
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
 </div>
 
 <div class="index-page">
     <div class="index-btn-container">
-        <a class= "index-buttons" href="upload/">Upload Data</a>
-        <a class= "index-buttons" href="cities/">View cities</a>
-        <a class= "index-buttons" href="#">View data</a>s
+        <h1 class="index-text">Hello! Welcome to Plexus Admin</h1>
+        <span class="index-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
     </div>
 </div>
 </body>

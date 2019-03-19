@@ -3,12 +3,12 @@
 /* GENERAL CSS */
 html, body {
     height: 100%;
-    background-color: #101010;
+    background-color: #e9e9e9;
 }
 
 body {
     margin: 0;
-    background-color: #f4f4f4;
+    background-color: #E9E9E9;
     font-family: 'Work Sans', sans-serif;
     font-weight: 300;
     color: #F4F4F4;
@@ -21,6 +21,13 @@ input {
     margin: 5px;
     border: 1px #979797 solid;
     border-radius: 50px;
+}
+
+i {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
 }
 
 input[type="text"], input[type="password"], textarea {
@@ -97,6 +104,49 @@ w3-right {
     margin-right: 20px;
     float: right;
     color:#2aabd2;
+}
+
+.dropdown .dropbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: inherit;
+    font-family: inherit;
+    margin: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    transition: width 2s ease;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    transition: width .5s ease;
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
 }
 
 /* LOGIN PAGE CSS*/
@@ -203,6 +253,10 @@ w3-right {
     transition-timing-function:ease;
 }
 
+.index-text, .index-content {
+    color: #000000;
+}
+
 /* CITIES CSS */
 .cities-page {
     background-color: #F4F4F4;
@@ -210,4 +264,79 @@ w3-right {
 
 .city-name {
     color: #000000;
+}
+
+/* PROVINCE CSS */
+.province-page {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.province-row {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    align-content: center;
+    width: 100%;
+}
+
+.province-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.province-column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+.province-name {
+    background-color: #bfbfbf;
+    padding: 5px;
+}
+
+.province-name:hover {
+    background-color:#ff2579;
+    transition-duration:0.5s;
+    transition-timing-function:ease;
+}
+
+.province-link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border: 1px #b9b9b9 solid;
+    transition: 0.3s;
+    color: #000000;
+    margin:10px;
+    min-height: 300px;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.province-container {
+    padding: 2px 16px;
+}
+
+.card-header {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .province-column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
 }

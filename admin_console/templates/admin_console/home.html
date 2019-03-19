@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
-    <title>PLEXUS - Home</title>
+    <title>PLEXUS - Upload Data</title>
 </head>
 <body>
+<!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
     <div class="w3-right w3-hide-small">
-      <a href="#projects" class="w3-bar-item w3-button">Link</a>
-      <a href="#about" class="w3-bar-item w3-button">Link</a>
-      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+      <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+      <a href="/cities" class="w3-bar-item w3-button">View Cities</a>
+      <a href="/" class="w3-bar-item w3-button">View Data</a>
     </div>
   </div>
 
-    <div class="header-right">Hello, username!</div>
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
 </div>
 
 <div class="home-upload-page">
