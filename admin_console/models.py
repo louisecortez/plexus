@@ -68,7 +68,7 @@ class City(models.Model):
         ctr = 0
         for barangay in self.barangay_set.all():
             values = barangay.values()
-            values[0]['properties']['index'] = ctr
+            # values[0]['properties']['index'] = ctr
             config['data']['allData'].append(values)
             ctr+=1
 
