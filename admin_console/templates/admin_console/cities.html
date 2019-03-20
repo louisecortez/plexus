@@ -28,15 +28,22 @@
 </div>
 
 <div class="cities-page">
-    <h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
+    <h2 class="cities-header">{{ province.region.name }} - {{ province.name }}</h2>
     <hr>
 
     <form id="form" method="post">
     {% csrf_token %}
+    <div class="cities-container">
         {% for city in province.cities %}
-            <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
+            <div class="cities-content-items">
+                <div class="cities-left">{{ city.name }}</div>
+                <div class="cities-right">
+                    <input type="checkbox" class="city-checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}>
+                </div>
+            </div>
         {% endfor %}
-    <input type="submit" value="Save">
+    </div>
+    <input type="submit" class="btn-save" value="Save">
     </form>
 </div>
 </body>
