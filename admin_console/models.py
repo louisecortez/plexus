@@ -96,6 +96,9 @@ class City(models.Model):
 
         return config
 
+    def amenity_types(self):
+        return list(Amenity.objects.filter(barangay__city_id=self.id).values_list('type', flat=True).distinct())
+
 
 class Barangay(models.Model):
     name = models.CharField(default="", max_length=255)

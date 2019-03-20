@@ -69,6 +69,7 @@ class BarangayGeojson(APIView):
 class ConfigJson(APIView):
     def get(self, request, city):
         city = City.objects.get(id=city)
+        print(city.amenity_types())
         datasets = [city.get_barangay_config(), city.get_amenity_config()]
         info = {"app": "kepler.gl"}
         config = {
@@ -76,19 +77,16 @@ class ConfigJson(APIView):
             "config": {
                 "visState": {
                     "filters": [
-                        # {
-                        #     "dataId": "amenities",
-                        #     "id": "0jv9s58qg",
-                        #     "name": "type",
-                        #     "type": "multiSelect",
-                        #     "value": [
-                        #         "mall",
-                        #         "atm"
-                        #     ],
-                        #     "enlarged": False,
-                        #     "plotType": "histogram",
-                        #     "yAxis": None
-                        # }
+                        {
+                            "dataId": "amenities",
+                            "id": "0jv9s58qg",
+                            "name": "type",
+                            "type": "multiSelect",
+                            "value": city.amenity_types(),
+                            "enlarged": False,
+                            "plotType": "histogram",
+                            "yAxis": None
+                        }
                     ],
                     "layers": [
                         {
