@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
-    <title>Cities</title>
+    <title>PLEXUS - Manage Cities</title>
 </head>
 <body>
-<!--
-{#    <h1>{{ province.region.name }} >> {{ province.name }}</h1>#}
-{#    {% for city in province.cities %}#}
-{#        <div>{{ city.name }}</div>#}
--->
+<!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
     <div class="w3-right w3-hide-small">
-      <a href="#projects" class="w3-bar-item w3-button">Link</a>
-      <a href="#about" class="w3-bar-item w3-button">Link</a>
-      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
+        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
     </div>
   </div>
 
-    <div class="header-right">Hello, username!</div>
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
 </div>
 
 <div class="cities-page">
-<h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
-<hr>
+    <h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
+    <hr>
 
-<form id="form" method="post">
-{% csrf_token %}
-    {% for city in province.cities %}
-        <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
-    {% endfor %}
-<input type="submit" value="Save">
-</form>
+    <form id="form" method="post">
+    {% csrf_token %}
+        {% for city in province.cities %}
+            <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
+        {% endfor %}
+    <input type="submit" value="Save">
+    </form>
 </div>
 </body>
 </html>

@@ -496,3 +496,7 @@ class CityList(View):
 def logout_view(request):
     logout(request)
     return redirect('/')
+  
+@login_required
+def users(request):
+    return render(request, 'admin_console/users.html')

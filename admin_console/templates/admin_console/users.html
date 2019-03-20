@@ -2,20 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <script src="/static/js/admin.js"></script>
     <title>PLEXUS - Manage Users</title>
 </head>
 <body>
+<!-- Navbar (sit on top) -->
 <div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+  <div class="w3-bar w3-white w3-wide w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
     <div class="w3-right w3-hide-small">
-      <a href="#projects" class="w3-bar-item w3-button">Link</a>
-      <a href="#about" class="w3-bar-item w3-button">Link</a>
-      <a href="#contact" class="w3-bar-item w3-button">Link</a>
+        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
+        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
     </div>
   </div>
 
-    <div class="header-right">Hello, username!</div>
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
 </div>
+
+<div class="users-page">
+    <div class="users-container">
+        <div class="users-tab">
+            <button class="tablinks" id="btn-pending" onclick="openUsers(event, 'users-pending')">Pending</button>
+            <button class="tablinks" onclick="openUsers(event, 'users-approved')">Approved</button>
+            <button class="tablinks" onclick="openUsers(event, 'users-rejected')">Rejected</button>
+        </div>
+
+        <div class="users-tab-content">
+            <div id="users-pending" class="tabcontent">
+                <h3>Pending Requests</h3>
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                    <div class="tabcontent-right">
+                        <button class="btn-approve">Approve</button>
+                        <button class="btn-reject">Reject</button>
+                    </div>
+                </div>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                    <div class="tabcontent-right">
+                        <button class="btn-approve">Approve</button>
+                        <button class="btn-reject">Reject</button>
+                    </div>
+                </div>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                    <div class="tabcontent-right">
+                        <button class="btn-approve">Approve</button>
+                        <button class="btn-reject">Reject</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="users-approved" class="tabcontent">
+                <h3>Approved</h3>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                    <div class="tabcontent-right">
+                        <button class="btn-reject">Remove</button>
+                    </div>
+                </div>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                    <div class="tabcontent-right">
+                        <button class="btn-reject">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="users-rejected" class="tabcontent">
+                <h3>Rejected</h3>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                </div>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                </div>
+
+                <div class="user-request-item">
+                    <div class="tabcontent-left">
+                        <span class="req-bold">Username:</span> ninenine <br>
+                        <span class="req-bold">Email:</span> andy_samberg@dlsu.edu.ph <br>
+                        <span class="req-bold">Password:</span> ****** <br>
+                        <span class="req-bold">Reason:</span> I want to see why my place has so much traffic >:(
+                        <br><br><i>Received 03/20/2019 14:65:01</i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

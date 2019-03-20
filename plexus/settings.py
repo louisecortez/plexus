@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'plexus.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plexus2',
+        'NAME': 'plexus_2',
         'USER': 'postgres',
-        'PASSWORD': 'p@ssword',
+        'PASSWORD': '1234',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
