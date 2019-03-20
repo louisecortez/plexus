@@ -18,17 +18,22 @@ from .models import DataFile, Barangay, Amenity, City, Region, Province
 def index(request):
     return render(request, 'admin_console/index.html')
 
+
 def files(request):
     pass
+
 
 def households(request):
     pass
 
+
 def householdmembers(request):
     pass
 
+
 def barangay(request):
     pass
+
 
 class GetActiveCities(APIView):
     def get(self, request):
@@ -38,7 +43,8 @@ class GetActiveCities(APIView):
         for c in cities:
             li.append(c.json())
 
-        return HttpResponse(json.dumps(li),content_type='application/json',status=200)
+        return HttpResponse(json.dumps(li), content_type='application/json', status=200)
+
 
 class datafiles(APIView):
     def get(self, request):
@@ -46,17 +52,309 @@ class datafiles(APIView):
         serializer = DataFileSerializer(files, many=True)
         return Response(serializer.data)
 
+
 class BarangayGeojson(APIView):
     def get(self, request, city):
         if isinstance(city, int):
             brgys = Barangay.objects.filter(city__id=city)
         else:
             brgys = Barangay.objects.filter(city__name__iexact=city.replace('_', ' '))
-        d = {"type":"FeatureCollection", 'features' : []}
+        d = {"type": "FeatureCollection", 'features': []}
         for brgy in brgys:
             d['features'].append(brgy.json())
 
-        return HttpResponse(json.dumps(d),content_type='application/json',status=200)
+        return HttpResponse(json.dumps(d), content_type='application/json', status=200)
+
+
+class ConfigJson(APIView):
+    def get(self, request, city):
+        city = City.objects.get(id=city)
+        datasets = [city.get_barangay_config(), city.get_amenity_config()]
+        info = {"app": "kepler.gl"}
+        config = {
+            "version": "v1",
+            "config": {
+                "visState": {
+                    "filters": [
+                        # {
+                        #     "dataId": "amenities",
+                        #     "id": "0jv9s58qg",
+                        #     "name": "type",
+                        #     "type": "multiSelect",
+                        #     "value": [
+                        #         "mall",
+                        #         "atm"
+                        #     ],
+                        #     "enlarged": False,
+                        #     "plotType": "histogram",
+                        #     "yAxis": None
+                        # }
+                    ],
+                    "layers": [
+                        {
+                            "id": "jusnudd",
+                            "type": "icon",
+                            "config": {
+                                "dataId": "amenities",
+                                "label": "Amenity",
+                                "color": [
+                                    255,
+                                    254,
+                                    230
+                                ],
+                                "columns": {
+                                    "lat": "latitude",
+                                    "lng": "longitude",
+                                    "icon": "icon"
+                                },
+                                "isVisible": True,
+                                "visConfig": {
+                                    "radius": 30,
+                                    "fixedRadius": False,
+                                    "opacity": 0.8,
+                                    "colorRange": {
+                                        "name": "Uber Viz Qualitative 4",
+                                        "type": "qualitative",
+                                        "category": "Uber",
+                                        "colors": [
+                                            "#12939A",
+                                            "#DDB27C",
+                                            "#88572C",
+                                            "#FF991F",
+                                            "#F15C17",
+                                            "#223F9A",
+                                            "#DA70BF",
+                                            "#125C77",
+                                            "#4DC19C",
+                                            "#776E57",
+                                            "#17B8BE",
+                                            "#F6D18A",
+                                            "#B7885E",
+                                            "#FFCB99",
+                                            "#F89570",
+                                            "#829AE3",
+                                            "#E79FD5",
+                                            "#1E96BE",
+                                            "#89DAC1",
+                                            "#B3AD9E"
+                                        ],
+                                        "reversed": False
+                                    },
+                                    "radiusRange": [
+                                        0,
+                                        50
+                                    ],
+                                    "hi-precision": False
+                                },
+                                "textLabel": {
+                                    "field": None,
+                                    "color": [
+                                        255,
+                                        255,
+                                        255
+                                    ],
+                                    "size": 50,
+                                    "offset": [
+                                        0,
+                                        0
+                                    ],
+                                    "anchor": "middle"
+                                }
+                            },
+                            "visualChannels": {
+                                "colorField": {
+                                    "name": "type",
+                                    "type": "string"
+                                },
+                                "colorScale": "ordinal",
+                                "sizeField": None,
+                                "sizeScale": "linear"
+                            }
+                        },
+                        {
+                            "id": "xrf8f2s",
+                            "type": "point",
+                            "config": {
+                                "dataId": "barangays",
+                                "label": "Center",
+                                "color": [
+                                    23,
+                                    184,
+                                    190
+                                ],
+                                "columns": {
+                                    "lat": "latitude",
+                                    "lng": "longitude",
+                                    "altitude": None
+                                },
+                                "isVisible": False,
+                                "visConfig": {
+                                    "radius": 10,
+                                    "fixedRadius": False,
+                                    "opacity": 0.8,
+                                    "outline": False,
+                                    "thickness": 2,
+                                    "colorRange": {
+                                        "name": "Global Warming",
+                                        "type": "sequential",
+                                        "category": "Uber",
+                                        "colors": [
+                                            "#5A1846",
+                                            "#900C3F",
+                                            "#C70039",
+                                            "#E3611C",
+                                            "#F1920E",
+                                            "#FFC300"
+                                        ]
+                                    },
+                                    "radiusRange": [
+                                        0,
+                                        50
+                                    ],
+                                    "hi-precision": False
+                                },
+                                "textLabel": {
+                                    "field": None,
+                                    "color": [
+                                        255,
+                                        255,
+                                        255
+                                    ],
+                                    "size": 50,
+                                    "offset": [
+                                        0,
+                                        0
+                                    ],
+                                    "anchor": "middle"
+                                }
+                            },
+                            "visualChannels": {
+                                "colorField": None,
+                                "colorScale": "quantile",
+                                "sizeField": None,
+                                "sizeScale": "linear"
+                            }
+                        },
+                        {
+                            "id": "izm95sg",
+                            "type": "geojson",
+                            "config": {
+                                "dataId": "barangays",
+                                "label": "Boundaries",
+                                "color": [
+                                    246,
+                                    209,
+                                    138,
+                                    255
+                                ],
+                                "columns": {
+                                    "geojson": "_geojson"
+                                },
+                                "isVisible": True,
+                                "visConfig": {
+                                    "opacity": 0.8,
+                                    "thickness": 0.5,
+                                    "colorRange": {
+                                        "name": "Purple Blue Yellow 6",
+                                        "type": "sequential",
+                                        "category": "Uber",
+                                        "colors": [
+                                            "#2B1E3E",
+                                            "#343D5E",
+                                            "#4F777E",
+                                            "#709E87",
+                                            "#99BE95",
+                                            "#D6DEBF"
+                                        ],
+                                        "reversed": False
+                                    },
+                                    "radius": 10,
+                                    "sizeRange": [
+                                        0,
+                                        10
+                                    ],
+                                    "radiusRange": [
+                                        0,
+                                        50
+                                    ],
+                                    "heightRange": [
+                                        0,
+                                        500
+                                    ],
+                                    "elevationScale": 5,
+                                    "hi-precision": False,
+                                    "stroked": True,
+                                    "filled": True,
+                                    "enable3d": False,
+                                    "wireframe": False
+                                },
+                                "textLabel": {
+                                    "field": None,
+                                    "color": [
+                                        255,
+                                        255,
+                                        255
+                                    ],
+                                    "size": 50,
+                                    "offset": [
+                                        0,
+                                        0
+                                    ],
+                                    "anchor": "middle"
+                                }
+                            },
+                            "visualChannels": {
+                                "colorField": {
+                                    "name": "desirability",
+                                    "type": "real"
+                                },
+                                "colorScale": "quantile",
+                                "sizeField": None,
+                                "sizeScale": "linear",
+                                "heightField": None,
+                                "heightScale": "linear",
+                                "radiusField": None,
+                                "radiusScale": "linear"
+                            }
+                        }
+                    ],
+                    "interactionConfig": {
+                        "tooltip": {
+                            "fieldsToShow": {
+                                "barangays": [
+                                    "name",
+                                    "income",
+                                    "population",
+                                    "desirability",
+                                    "spatial"
+                                ],
+                                "amenities": [
+                                    "name",
+                                    "barangay",
+                                    "type"
+                                ]
+                            },
+                            "enabled": True
+                        },
+                        "brush": {
+                            "size": 0.5,
+                            "enabled": False
+                        }
+                    },
+                    "layerBlending": "normal",
+                    "splitMaps": []
+                }
+            }
+        }
+
+        j = {
+            "datasets": datasets,
+            "config": config,
+            "info": info
+        }
+
+        return HttpResponse(json.dumps(j), content_type='application/json', status=200)
+
 
 class AmenityGeojson(APIView):
     def get(self, request, city):
@@ -71,6 +369,7 @@ class AmenityGeojson(APIView):
             # d['features'].append(amenity.json())
 
         return HttpResponse(s, content_type='application/json', status=200)
+
 
 @login_required
 class UploadDataFile(View):
@@ -90,6 +389,7 @@ class UploadDataFile(View):
     def post(self, request):
         pass
 
+
 @login_required
 def upload_file(request):
     if request.method == 'POST':
@@ -104,9 +404,9 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'admin_console/home.html', {'form': form})
 
+
 @login_required
 def handle_uploaded_file(f):
-
     print(f.read())
     households = str(f.read()).split('[\r\n]+')[1:]
     for h in households:
@@ -114,6 +414,7 @@ def handle_uploaded_file(f):
 
     with open('name.txt', 'wb+') as destination:
         destination.write(str(f.read()))
+
 
 @login_required
 def upload(request):
@@ -128,6 +429,7 @@ def upload(request):
         'form': form,
     }
     return render(request, 'admin_console/home.html', context)
+
 
 def login_view(request):
     next = request.GET.get('next')
@@ -146,6 +448,7 @@ def login_view(request):
     }
     return render(request, 'admin_console/login.html', context)
 
+
 @login_required
 def get_provinces(request):
     regions = Region.objects.all()
@@ -154,6 +457,7 @@ def get_provinces(request):
     }
     return render(request, 'admin_console/province.html', context)
     pass
+
 
 @login_required
 def get_cities(request, id):
@@ -166,6 +470,7 @@ def get_cities(request, id):
     return render(request, 'admin_console/cities.html', context)
     pass
 
+
 class CityList(View):
     def get(self, request, id):
         province = Province.objects.get(id=id)
@@ -176,7 +481,7 @@ class CityList(View):
         }
         return render(request, 'admin_console/cities.html', context)
 
-    def post(self, request,id):
+    def post(self, request, id):
         cities = [int(id) for id in request.POST.getlist('cities')]
         province = Province.objects.get(id=id)
         for city in province.cities():
@@ -187,6 +492,7 @@ class CityList(View):
                 city.is_active = False
                 city.save()
         return redirect('/')
+
 
 @login_required
 def logout_view(request):

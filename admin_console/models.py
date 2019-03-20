@@ -50,6 +50,52 @@ class City(models.Model):
             'name': self.province.name + " - " + self.name
         }
 
+    def get_barangay_config(self):
+        config = {
+            "version": "v1",
+            "data": {
+                "id": "barangays",
+                "label": "Barangay",
+                "color": [
+                    143,
+                    47,
+                    191
+                ],
+            "allData": [],
+            "fields": Barangay.config_fields()
+            }
+        }
+        ctr = 0
+        for barangay in self.barangay_set.all():
+            values = barangay.values()
+            values[0]['properties']['index'] = ctr
+            config['data']['allData'].append(values)
+            ctr+=1
+
+        return config
+
+    def get_amenity_config(self):
+        config = {
+            "version": "v1",
+            "data": {
+                "id": "amenities",
+                "label": "Amenity",
+                "color": [
+                    143,
+                    47,
+                    191
+                ],
+            "allData": [],
+            "fields": Amenity.config_fields()
+            }
+        }
+
+        for barangay in self.barangay_set.all():
+            for amenity in barangay.amenity_set.all():
+                config['data']['allData'].append(amenity.values())
+
+        return config
+
 
 class Barangay(models.Model):
     name = models.CharField(default="", max_length=255)
@@ -104,6 +150,98 @@ class Barangay(models.Model):
             str({'type': 'Feature', 'geometry': ast.literal_eval(self.geojson)})
         ]
         pass
+
+    @staticmethod
+    def config_fields():
+        return [
+            {
+                "name": "_geojson",
+                "type": "geojson",
+                "format": ""
+            },
+            {
+                "name": "name",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "income",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "population",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "latitude",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "longitude",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "desirability",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "spatial",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "temporal",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "economic",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "physical",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "psychological",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "physiological",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "sustainability",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "performance",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "fairness",
+                "type": "real",
+                "format": ""
+            }
+        ]
+
+    def values(self):
+        geo = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
+        li = [geo, self.name, self.income, self.population, self.latitude, self.longitude, self.get_td(), self.spatial,
+              self.temporal, self.economic, self.physical, self.psychological, self.physiological, self.sustainability,
+              self.performance, self.fairness]
+        return li
 
 
 class Household(models.Model):
@@ -166,7 +304,47 @@ class Amenity(models.Model):
         return j
 
     def row(self):
-        return ','.join(['"'+self.name+'"', str(self.latitude), str(self.longitude), '"'+self.barangay.name+'"', '"'+self.type+'"', 'place'])
+        return ','.join(['"' + self.name + '"', str(self.latitude), str(self.longitude), '"' + self.barangay.name + '"',
+                         '"' + self.type + '"', 'place'])
+
+    def values(self):
+        li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, 'place']
+        return li
+
+    @staticmethod
+    def config_fields():
+        return [
+            {
+                "name": "name",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "latitude",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "longitude",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "barangay",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "type",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "icon",
+                "type": "string",
+                "format": ""
+            }
+        ]
 
 
 class Indicator(models.Model):
