@@ -46,6 +46,7 @@ input[type="text"]:active, input[type="password"]:active, textarea:active {
 .w3-top {
     top: 0;
     background-color: #000000;
+    padding:5px;
 }
 
 .w3-bar {
@@ -57,10 +58,6 @@ input[type="text"]:active, input[type="password"]:active, textarea:active {
 /*.w3-wide {*/
     /*letter-spacing: 2px;*/
 /*}*/
-
-.w3-padding {
-    padding:8px 16px;
-}
 
 .w3-bar-item {
     padding:8px 16px;
@@ -100,7 +97,7 @@ w3-right {
 }
 
 .header-right {
-    margin-top: -38px;
+    margin-top: -28px;
     margin-right: 20px;
     float: right;
     color:#2aabd2;
@@ -367,11 +364,15 @@ w3-right {
 }
 
 .users-tab button:hover {
-  text-decoration: underline;
+    text-decoration: underline;
+    font-weight: bold;
+    color: #791d85;
 }
 
 .users-tab button.active {
     text-decoration: underline;
+    font-weight: bold;
+    color: #791d85;
 }
 
 .users-container {
@@ -379,16 +380,9 @@ w3-right {
     width: 70%;
 }
 
-.users-tab-content {
-    background-color: #F5F5F5;
-}
-
 .tabcontent {
     display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
     text-align: left;
-    overflow: hidden;
 }
 
 .tabcontent-left {
@@ -402,11 +396,44 @@ w3-right {
     text-align: right;
 }
 
+.user-request-item {
+    border: 1px solid #ccc;
+    background-color: #F5F5F5;
+    overflow: hidden;
+    padding: 6px 12px;
+    margin-bottom:15px;
+}
+
+.req-bold {
+    color: #791d85;
+    font-weight: bold;
+}
+
+.btn-approve, .btn-reject {
+    background-color: #588544;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
+    color: #F4F4F4;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.btn-reject {
+    background-color: #852817;
+    border: none;
+}
+
+.btn-approve:hover, .btn-reject:hover {
+    background-color:#F4F4F4;
+    border: 1px solid #828282;
+    color: #000000;
+    transition-duration:0.5s;
+    transition-timing-function:ease;
+}
+
 .users-header {
     background-color: #000000;
     color: #F5F5F5;
-}
-
-#btn-pending {
-    border-right: 1px solid #000000;
 }
