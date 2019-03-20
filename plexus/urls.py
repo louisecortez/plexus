@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('datafiles/', views.datafiles.as_view()),
     path('users/', views.users),
+    path('config/<int:city>/config.json', views.ConfigJson.as_view()),
     path('barangays/<int:city>/geo.json', views.BarangayGeojson.as_view()),
     path('barangays/<slug:city>/geo.json', views.BarangayGeojson.as_view()),
     path('amenities/<int:city>/geo.csv', views.AmenityGeojson.as_view()),
