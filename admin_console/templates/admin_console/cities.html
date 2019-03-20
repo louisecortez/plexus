@@ -11,9 +11,10 @@
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
     <div class="w3-right w3-hide-small">
-      <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
-      <a href="/cities" class="w3-bar-item w3-button">View Cities</a>
-      <a href="/" class="w3-bar-item w3-button">View Data</a>
+        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
+        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
+        <a href="/" class="w3-bar-item w3-button">View Data</a>
     </div>
   </div>
 
@@ -28,16 +29,16 @@
 </div>
 
 <div class="cities-page">
-<h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
-<hr>
+    <h1 style="color:black;">{{ province.region.name }} - {{ province.name }}</h1>
+    <hr>
 
-<form id="form" method="post">
-{% csrf_token %}
-    {% for city in province.cities %}
-        <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
-    {% endfor %}
-<input type="submit" value="Save">
-</form>
+    <form id="form" method="post">
+    {% csrf_token %}
+        {% for city in province.cities %}
+            <div class="city-name">{{ city.name }} <input type="checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}> </div>
+        {% endfor %}
+    <input type="submit" value="Save">
+    </form>
 </div>
 </body>
 </html>
