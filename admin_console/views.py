@@ -107,7 +107,7 @@ class ConfigJson(APIView):
                                 },
                                 "isVisible": True,
                                 "visConfig": {
-                                    "radius": 30,
+                                    "radius": 40,
                                     "fixedRadius": False,
                                     "opacity": 0.8,
                                     "colorRange": {
@@ -238,7 +238,7 @@ class ConfigJson(APIView):
                             "type": "geojson",
                             "config": {
                                 "dataId": "barangays",
-                                "label": "Boundaries",
+                                "label": "Barangay",
                                 "color": [
                                     246,
                                     209,
@@ -321,10 +321,7 @@ class ConfigJson(APIView):
                             "fieldsToShow": {
                                 "barangays": [
                                     "name",
-                                    "income",
-                                    "population",
-                                    "desirability",
-                                    "spatial"
+                                    "desirability"
                                 ],
                                 "amenities": [
                                     "name",

@@ -61,16 +61,15 @@ class City(models.Model):
                     47,
                     191
                 ],
-            "allData": [],
-            "fields": Barangay.config_fields()
+                "allData": [],
+                "fields": Barangay.config_fields()
             }
         }
-        ctr = 0
+
         for barangay in self.barangay_set.all():
             values = barangay.values()
             # values[0]['properties']['index'] = ctr
             config['data']['allData'].append(values)
-            ctr+=1
 
         return config
 
@@ -85,8 +84,8 @@ class City(models.Model):
                     47,
                     191
                 ],
-            "allData": [],
-            "fields": Amenity.config_fields()
+                "allData": [],
+                "fields": Amenity.config_fields()
             }
         }
 
@@ -136,16 +135,16 @@ class Barangay(models.Model):
         j['properties']['longitude'] = self.longitude
         j['properties']['desirability'] = round(mean(
             [self.spatial, self.temporal, self.economic, self.physical, self.psychological, self.physiological,
-             self.sustainability, self.performance, self.fairness]), 6)
-        j['properties']['spatial'] = self.spatial
-        j['properties']['temporal'] = self.temporal
-        j['properties']['economic'] = self.economic
-        j['properties']['physical'] = self.physical
-        j['properties']['psychological'] = self.psychological
-        j['properties']['physiological'] = self.physiological
-        j['properties']['sustainability'] = self.sustainability
-        j['properties']['performance'] = self.performance
-        j['properties']['fairness'] = self.fairness
+             self.sustainability, self.performance, self.fairness]), 6) * 100
+        j['properties']['spatial'] = self.spatial * 100
+        j['properties']['temporal'] = self.temporal * 100
+        j['properties']['economic'] = self.economic * 100
+        j['properties']['physical'] = self.physical * 100
+        j['properties']['psychological'] = self.psychological * 100
+        j['properties']['physiological'] = self.physiological * 100
+        j['properties']['sustainability'] = self.sustainability * 100
+        j['properties']['performance'] = self.performance * 100
+        j['properties']['fairness'] = self.fairness * 100
         return j
 
     def row(self):
@@ -241,9 +240,13 @@ class Barangay(models.Model):
 
     def values(self):
         geo = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
-        li = [geo, self.name, self.income, self.population, self.latitude, self.longitude, self.get_td(), self.spatial,
-              self.temporal, self.economic, self.physical, self.psychological, self.physiological, self.sustainability,
-              self.performance, self.fairness]
+        li = [geo, self.name, self.income, self.population, self.latitude, self.longitude,
+              round(self.get_td() * 100, 4),
+              round(self.spatial * 100, 4),
+              round(self.temporal * 100, 4), round(self.economic * 100, 4), round(self.physical * 100, 4),
+              round(self.psychological * 100, 4),
+              round(self.physiological * 100, 4), round(self.sustainability * 100, 4),
+              round(self.performance * 100, 4), round(self.fairness * 100, 4)]
         return li
 
 
