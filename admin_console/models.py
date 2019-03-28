@@ -96,7 +96,23 @@ class City(models.Model):
         return config
 
     def amenity_types(self):
-        return list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification', flat=True).distinct())
+        return sorted(list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification',flat=True).distinct()))
+
+    def amenity_colors(self):
+        color_map = {
+            'Academic Facilities': '#800000',
+            'Accomodations': '#4363d8',
+            'Financial Establishments': '#e6beff',
+            'Food Establishments': '#fabebe',
+            'Market and Convenience Stores': '#42d4f4',
+            'Medical Facilities': '#ffe119',
+            'Others': '#a9a9a9',
+            'Recreational Facilities': '#f032e6',
+            'Service Shops': '#ffffff',
+            'Stores': '#808000'
+        }
+        return [color_map[a] for a in self.amenity_types()]
+
 
 
 class Barangay(models.Model):
@@ -337,7 +353,8 @@ class Amenity(models.Model):
             "Service Shops": "support",
             "Stores": "promo-alt"
         }
-        li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, self.classification, map[self.classification]]
+        li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, self.classification,
+              map[self.classification]]
         return li
 
     @staticmethod

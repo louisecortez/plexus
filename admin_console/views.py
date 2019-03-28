@@ -141,18 +141,7 @@ class ConfigJson(APIView):
                                         "name": "Uber Viz Qualitative 4",
                                         "type": "qualitative",
                                         "category": "Uber",
-                                        "colors": [
-                                            '#800000',
-                                            '#4363d8',
-                                            '#e6beff',
-                                            '#fabebe',
-                                            '#a9a9a9',
-                                            '#ffe119',
-                                            '#42d4f4',
-                                            '#f032e6',
-                                            '#ffffff',
-                                            '#808000'
-                                        ],
+                                        "colors": city.amenity_colors(),
                                         "reversed": False
                                     },
                                     "radiusRange": [
