@@ -96,7 +96,7 @@ class City(models.Model):
         return config
 
     def amenity_types(self):
-        return list(Amenity.objects.filter(barangay__city_id=self.id).values_list('type', flat=True).distinct())
+        return list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification', flat=True).distinct())
 
 
 class Barangay(models.Model):
@@ -238,6 +238,16 @@ class Barangay(models.Model):
             }
         ]
 
+    @staticmethod
+    def basic_config_fields():
+        return [
+            {
+                "name": "_geojson",
+                "type": "geojson",
+                "format": ""
+            }
+        ]
+
     def values(self):
         geo = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         li = [geo, self.name, self.income, self.population, self.latitude, self.longitude,
@@ -288,6 +298,7 @@ class Amenity(models.Model):
     latitude = models.FloatField(default=0.0)
     longitude = models.FloatField(default=0.0)
     sid = models.CharField(default="", max_length=255)
+    classification = models.CharField(default="", max_length=255)
 
     def __str__(self):
         return self.name
@@ -314,7 +325,19 @@ class Amenity(models.Model):
                          '"' + self.type + '"', 'place'])
 
     def values(self):
-        li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, 'place']
+        map = {
+            "Academic Facilities": "employees",
+            "Accomodations": "home",
+            "Financial Establishments": "payment",
+            "Food Establishments": "events",
+            "Market and Convenience Stores": "cart",
+            "Medical Facilities": "control-on",
+            "Others": "pin",
+            "Recreational Facilities": "car",
+            "Service Shops": "support",
+            "Stores": "promo-alt"
+        }
+        li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, self.classification, map[self.classification]]
         return li
 
     @staticmethod
@@ -342,6 +365,11 @@ class Amenity(models.Model):
             },
             {
                 "name": "type",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "class",
                 "type": "string",
                 "format": ""
             },
