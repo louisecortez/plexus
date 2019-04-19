@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
+    <script src="/static/js/admin.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <title>HOME - Admin</title>
 </head>
 <body>
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
-    <div class="w3-right w3-hide-small">
-        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
-        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
-        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
+<div class="header" id="header-fixed">
+    <div class="header-left">
+        <a href="/" class="header-text">PLEXUS Admin | </a>
+        <a href="/" class="header-links">Surveys</a>
+        <a href="/users" class="header-links">Users</a>
     </div>
-  </div>
 
     <div class="dropdown header-right">Hello, username!
         <button class="dropbtn">
@@ -24,13 +24,90 @@
         <div class="dropdown-content">
           <a href="/accounts/logout">Logout</a>
         </div>
-  </div>
+    </div>
 </div>
 
 <div class="index-page">
-    <div class="index-btn-container">
-        <h1 class="index-text">Hello! Welcome to Plexus Admin</h1>
-        <span class="index-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+    <div class="index-container">
+        <div class="index-left">
+            <div class="index-top">
+                <h1 class="index-text index-top-left">Surveys</h1>
+                <a href="/upload" class="index-top-right">Upload Data</a>
+            </div>
+{#            <div id="filter-container">#}
+{#                <form class="search-container">#}
+{#                    <input type="text" id="search-bar" placeholder="Search survey data...">#}
+{#                    <a href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a>#}
+{#                </form>#}
+{#                <span class="filter-text">Show:</span>#}
+{#                <select class="filter-dropdown">#}
+{#                    <option value="survey-all">All</option>#}
+{#                    <option value="published">Published</option>#}
+{#                    <option value="unpublished">Unpublished</option>#}
+{#                </select>#}
+{#            </div>#}
+
+            <table class="table-style survey-table-all" id="table-surveys">
+                <thead>
+                    <tr>
+                        <th>City/Region</th>
+                        <th>Filename</th>
+                        <th>Uploaded By</th>
+                        <th>Date Collected</th>
+                        <th>Date Uploaded</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for city in cities %}
+                        <tr>
+                            <td>{{city.name}}, {{ city.province.region }}</td>
+                            <td>Survey Data for {{city.name}} 2019</td>
+                            <td>Admin</td>
+                            <td>05/29/2015 05:50:24</td>
+                            <td>01/30/2016 18:10:06</td>
+                            {% if city.is_active == true %}
+                                <td>Published</td>
+                            {% else %}
+                                <td>Unpublished</td>
+                            {% endif %}
+                        </tr>
+                    {%  endfor %}
+{#                    <tr>#}
+{#                        <td>Metro Manila, NCR</td>#}
+{#                        <td>Survey Data for 2019</td>#}
+{#                        <td>Admin</td>#}
+{#                        <td>05/29/2015 05:50:24</td>#}
+{#                        <td>01/30/2016 18:10:06</td>#}
+{#                        <td>Published</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>Antipolo/CALABARZON</td>#}
+{#                        <td>Survey Data for 2019</td>#}
+{#                        <td>Admin2</td>#}
+{#                        <td>04/29/2015 05:50:24</td>#}
+{#                        <td>01/30/2016 18:10:06</td>#}
+{#                        <td>Published</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>Antipolo/CALABARZON</td>#}
+{#                        <td>Survey Data for 2019</td>#}
+{#                        <td>Admin</td>#}
+{#                        <td>05/29/2015 05:50:24</td>#}
+{#                        <td>01/30/2016 18:10:06</td>#}
+{#                        <td>Published</td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>Antipolo/CALABARZON</td>#}
+{#                        <td>Survey Data for 2019</td>#}
+{#                        <td>Admin</td>#}
+{#                        <td>05/29/2015 05:50:24</td>#}
+{#                        <td>01/30/2016 18:10:06</td>#}
+{#                        <td>Published</td>#}
+{#                    </tr>#}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </body>

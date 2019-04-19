@@ -16,7 +16,14 @@ from .models import DataFile, Barangay, Amenity, City, Region, Province
 
 @login_required
 def index(request):
-    return render(request, 'admin_console/index.html')
+    # return render(request, 'admin_console/index.html')
+    cities = City.objects.all()
+
+    context = {
+        'cities': cities,
+    }
+    return render(request, 'admin_console/index.html', context)
+    pass
 
 
 def files(request):
@@ -584,3 +591,8 @@ def logout_view(request):
 @login_required
 def users(request):
     return render(request, 'admin_console/users.html')
+
+
+@login_required
+def survey(request):
+    return render(request, 'admin_console/survey.html')

@@ -3,15 +3,16 @@
 /* GENERAL CSS */
 html, body {
     height: 100%;
-    background-color: #e9e9e9;
+    background-color: #f5f5f5;
+    word-wrap: break-word;
 }
 
 body {
     margin: 0;
-    background-color: #E9E9E9;
+    background-color: #f5f5f5;
     font-family: 'Work Sans', sans-serif;
     font-weight: 300;
-    color: #F4F4F4;
+    color: #E9E9E9;
     text-align: center;
 }
 
@@ -20,7 +21,6 @@ input {
     padding: 8px;
     margin: 5px;
     border: 1px #979797 solid;
-    border-radius: 50px;
 }
 
 i {
@@ -30,80 +30,105 @@ i {
     padding: 3px;
 }
 
-input[type="text"], input[type="password"], textarea {
-    background-color: #000000;
-    border: 1px #414141 solid;
-    color: #ffffff;
+.table-style {
+    width:100%;
+    color: #0f0f0f;
+    margin-top:20px;
+    border-collapse:collapse;
+    table-layout: fixed;
+    /*border: 1px solid black;*/
 }
 
-input[type="text"]:active, input[type="password"]:active, textarea:active {
-    background-color: #000000;
-    border: 1px #414141 solid;
-    color: #ffffff;
+th, td {
+    padding: 15px;
+    border-bottom: 1pt solid #D0CFCE;
+    cursor: pointer;
 }
 
-/* GENERAL HEADER CSS */
-.w3-top {
-    top: 0;
-    background-color: #000000;
+.survey-table-all tr {
+    transition: 0.3s;
 }
 
-.w3-bar {
+.survey-table-all tr:hover {
+    background-color: #c2c2c2;
+}
+
+/* SEARCH BAR */
+.search-container{
+    display: block;
+    width:100%;
+    margin-right: 50px;
+    margin-bottom: -60px;
+}
+
+#search-bar {
+    background-color: #FEFEFE;
+    margin: 0 auto;
     width: 100%;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border: 1px solid #D0CFCE;
+    outline: none;
+    border-radius: 5px;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.search-icon{
+    position: relative;
+    float: right;
+    width: 75px;
+    height: 75px;
+    top: -62px;
+    right: -45px;
+}
+
+/* HEADER V2 CSS */
+.header {
     overflow: hidden;
-    display: inline-block;
+    background-color: #d829f1;
+    display: block;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
-/*.w3-wide {*/
-    /*letter-spacing: 2px;*/
-/*}*/
-
-.w3-padding {
-    padding:8px 16px;
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
-.w3-bar-item {
-    padding:8px 16px;
-    float:left;
-    width:auto;
-    border:none;
-    display:block;
-    outline:0;
-    display:block;
-    text-align:left;
-    white-space:normal;
+.header-text {
+    text-decoration: none;
+    color:#fbfbfb;
 }
 
-w3-right {
-    float:right;
+.header-links {
+    margin: 0 10px;
+    text-decoration: none;
+    color:#fbfbfb;
+    padding: 0 10px;
+    transition:0.3s;
 }
 
-.w3-button {
-    border:none;
-    display:inline-block;
-    padding:8px 16px;
-    vertical-align:middle;
-    overflow:hidden;
-    text-decoration:none;
-    color:inherit;
-    background-color:inherit;
-    text-align:center;
-    cursor:pointer;
-    white-space:nowrap
+.header-links:hover {
+    background-color: #e946ed;
+    border-radius: 5px;
 }
 
-.page-title {
-    color: #575757;
-    font-weight: 400;
-    font-size: 1.5em;
-    margin: 10px;
+.header-left {
+    float: left;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
 }
 
 .header-right {
-    margin-top: -38px;
-    margin-right: 20px;
     float: right;
-    color:#2aabd2;
+    padding: 20px;
+}
+
+.sticky + .index-page {
+    padding-top: 102px;
 }
 
 .dropdown .dropbtn {
@@ -182,10 +207,6 @@ w3-right {
             url("/static/img/city.jpg");
 }
 
-.login-fields {
-
-}
-
 .login-page {
     display: flex;
     flex-direction: row;
@@ -203,35 +224,77 @@ w3-right {
     font-size: 4em;
 }
 
-/* HOME CSS*/
-.home-upload-page {
-    text-align: center;
-}
-
-.home-upload-container {
-    width:50%;
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.upload-box {
-    border: 2px dashed #bbb;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    padding: 50px;
-    text-align: center;
-    font: 21pt bold arial;
-    color: #bbb;
-}
-
 /* INDEX CSS*/
 .index-page {
     height: 100%;
+    text-align: left;
 }
 
-.index-btn-container {
-    margin-top: 40px;
+.index-container {
+    display:flex;
+}
+
+.index-top {
+    display:flex;
+    flex-direction: row;
+}
+
+.index-top-left {
+    flex:90%;
+}
+
+.index-top-right {
+    flex: 10%;
+    text-align: center;
+    justify-content: center;
+    background-color: #d829f1;
+    color:#fbfbfb;
+    text-decoration: none;
+    border: 1px solid #D0CFCE;
+    outline: none;
+    border-radius: 5px;
+    font-family: 'Work Sans', sans-serif;
+    margin-bottom:40px;
+    padding-top: 10px;
+    transition: 0.3s;
+}
+
+.index-top-right:hover {
+    background-color: #fbfbfb;
+    color: #121212;
+}
+
+.index-left {
+    width: 100%;
+    margin-top:20px;
+    margin-left: 50px;
+    margin-right: 80px;
+    float: left;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+}
+
+.filter-dropdown {
+    margin: 0 auto;
+    width: 20%;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border: 1px solid #D0CFCE;
+    outline: none;
+    border-radius: 5px;
+    background-color: #fefefe;
+    font-family: 'Work Sans', sans-serif;
+}
+
+.filter-text {
+    margin-top:15px;
+    margin-right: 5px;
+    color:#121212;
 }
 
 .index-buttons {
@@ -254,133 +317,92 @@ w3-right {
 }
 
 .index-text, .index-content {
-    color: #000000;
+    color: #121212;
 }
 
-/* CITIES CSS */
-.cities-page {
-    background-color: #e9e9e9;
+/* UPLOAD */
 
+.home-upload-page {
+    height: 100%;
+    text-align: left;
 }
 
-.city-name {
-    color: #000000;
+.home-upload-container {
+    display:flex;
+    flex-direction: column;
+    margin:20px 50px;
 }
 
-/* PROVINCE CSS */
-.province-page {
+.field-label {
+    color:#121212;
+    margin: 20px 0;
+}
+
+.upload-fields {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-.province-row {
-    margin-top: 30px;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+.city-upload-dropdown {
+    width:40%;
 }
 
-.province-row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.province-column {
-    float: left;
-    width: 25%;
-    padding: 0 10px;
-}
-
-.province-name {
-    background-color: #bfbfbf;
-    padding: 5px;
-}
-
-.province-name:hover {
-    background-color:#ff2579;
-    transition-duration:0.5s;
-    transition-timing-function:ease;
-}
-
-.province-link {
-    text-decoration: none;
-    color: #000000;
-}
-
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border: 1px #b9b9b9 solid;
-    transition: 0.3s;
-    color: #000000;
-    margin:10px;
-    min-height: 300px;
-    background-color: #f5f5f5;
-}
-
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-.province-container {
-    padding: 2px 16px;
-}
-
-.card-header {
-    background-color: #000000;
-    color: #ffffff;
+.date-picker, #id_file {
+    border: 1px solid #D0CFCE;
+    outline: none;
+    border-radius: 5px;
+    background-color: #fefefe;
+    font-family: 'Work Sans', sans-serif;
     padding: 10px;
 }
 
-@media screen and (max-width: 600px) {
-  .province-column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
+#id_file {
+    margin-left: -35px;
+    color:#121212;
 }
 
-/* USERS CSS */
-.users-page {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.users-tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-.users-tab  button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
+.upload-buttons {
+    margin: 20px 5px;
+    text-align: left;
+    width:30%;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'Work Sans', sans-serif;
+    background-color: #d829f1;
+    border:none;
+    color: #fefefe;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 
-.users-tab button:hover {
-  background-color: #ddd;
+.upload-buttons:hover {
+    background-color: #fbfbfb;
+    color: #121212;
+    border: 1px #575757 solid;
+    cursor: pointer;
 }
 
-/* Create an active/current tablink class */
-.users-tab button.active {
-  background-color: #ccc;
+/* INDIVIDUAL SURVEY PAGE */
+.survey-details {
+    color: #121212;
+    font-weight: bold;
+    flex:50%;
 }
 
-.users-container {
-    color: black;
+.detail-value {
+    font-weight: 300;
 }
 
-.tabcontent {
-  display: none;
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  border-top: none;
+.survey-top {
+    display: flex;
+    flex-direction: row;
+}
+
+.publish-buttons {
+    flex:50%;
+    text-align: right;
+    margin: 20px;
+}
+
+.survey-dropdown {
+    width: 30%;
 }

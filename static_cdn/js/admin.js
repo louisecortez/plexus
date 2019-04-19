@@ -1,3 +1,13 @@
+var header;
+var sticky;
+
+window.onscroll = function() {fixedHeader()};
+window.onload = function() {
+    // HEADER JS
+    header = document.getElementById("header-fixed");
+    sticky = header.offsetTop;
+}
+
 function openUsers(evt, usersName) {
   // Declare all variables
   var i, tabcontent, tablinks;
@@ -17,4 +27,14 @@ function openUsers(evt, usersName) {
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(usersName).style.display = "block";
   evt.currentTarget.className += " active";
+}
+
+
+/* JS FOR HEADER */
+function fixedHeader() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
 }

@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
+    <script src="/static/js/admin.js"></script>
     <title>PLEXUS - Upload Data</title>
 </head>
 <body>
 <!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
-    <div class="w3-right w3-hide-small">
-        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
-        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
-        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
+<div class="header" id="header-fixed">
+    <div class="header-left">
+        <a href="/" class="header-text">PLEXUS Admin | </a>
+        <a href="/cities" class="header-links">Surveys</a>
+        <a href="/users" class="header-links">Users</a>
     </div>
-  </div>
 
     <div class="dropdown header-right">Hello, username!
         <button class="dropbtn">
@@ -24,18 +22,34 @@
         <div class="dropdown-content">
           <a href="/accounts/logout">Logout</a>
         </div>
-  </div>
+    </div>
 </div>
 
 <div class="home-upload-page">
     <div class="home-upload-container">
-        <div class="page-title">Upload File</div>
+        <h1 class="index-text index-top-left">Upload New Survey Data</h1>
         <form id="form" method="post" enctype="multipart/form-data">
+            <div class="upload-fields">
+                <div class="field-label">City/Municipality</div>
+                <select class="filter-dropdown city-upload-dropdown">
+                    <option value="">Antipolo City, CALABARZON</option>
+                    <option value="">Baguio City, CAR</option>
+                    <option value="">Metro Manila, NCR</option>
+                </select>
+            </div>
             {% csrf_token %}
             {#<input type="file" id="file" name="file" accept=".csv" />#}
-            <div class="upload-box">{{ form.as_p }}</div>
-            <input type="submit" class="index-buttons" value="Upload">
+            <div class="upload-fields">
+                <div class="field-label">Upload File</div>
+                <div class="upload-box">{{ form.as_p }}</div>
+            </div>
+            <div class="upload-fields">
+                <div class="field-label">When was it collected?</div>
+                <input type="date" class="date-picker" name="date-collected">
+            </div>
+            <input type="submit" class="upload-buttons" value="Upload & Preview this data >">
         </form>
+        <a href="/survey" class="upload-buttons">Test</a>
     </div>
 </div>
 </body>
