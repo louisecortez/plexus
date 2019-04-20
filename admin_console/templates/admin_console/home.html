@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
     <script src="/static/js/admin.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <title>PLEXUS - Upload Data</title>
 </head>
 <body>
@@ -15,7 +17,7 @@
         <a href="/users" class="header-links">Users</a>
     </div>
 
-    <div class="dropdown header-right">Hello, username!
+    <div class="dropdown header-right">Hello, {{ user.username }}!
         <button class="dropbtn">
           <i class="arrow down"></i>
         </button>

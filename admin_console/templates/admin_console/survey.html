@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
     <script src="/static/js/admin.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
     <title>Survey - Admin</title>
 </head>
 <body>
@@ -15,7 +16,7 @@
         <a href="/users" class="header-links">Users</a>
     </div>
 
-    <div class="dropdown header-right">Hello, username!
+    <div class="dropdown header-right">Hello, {{ user.username }}!
         <button class="dropbtn">
           <i class="arrow down"></i>
         </button>
@@ -29,23 +30,35 @@
     <div class="home-upload-container">
         <div class="survey-top">
             <div class="survey-details">
-                <h1 class="index-text index-top-left">Survey Filename Here</h1>
-                <div class="detail-title">City/Municipality: <span class="detail-value">Antipolo City, CALABARZON</span></div>
+                <h1 class="index-text index-top-left">Survey Data for {{ city.name }}, {{ city.province.region }}</h1>
+                <div class="detail-title">City/Region: <span class="detail-value">{{ city.name }}, {{ city.province.region }}</span></div>
                 <div class="detail-title">Collected on: <span class="detail-value">05/29/2015 05:50:24</span></div>
                 <div class="detail-title">Uploaded by: <span class="detail-value">01/30/2016 18:10:06</span></div>
                 <div class="detail-title">Uploaded by: <span class="detail-value">Admin</span></div>
-                <div class="detail-title">Status: <span class="detail-value">Unpublished</span></div>
+                {% if city.is_active %}
+                    <div class="detail-title">Status: <span class="detail-value">Published</span></div>
+                {% else  %}
+                    <div class="detail-title">Status: <span class="detail-value">Unpublished</span></div>
+                {% endif %}
             </div>
 
             <div class="publish-buttons">
-                <select class="filter-dropdown survey-dropdown">
-                    <option value="">Publish</option>
-                    <option value="">Unpublish</option>
-                </select>
-                <a href="/survey" class="upload-buttons">Save</a>
+                <form id="form" method="post">
+                {% csrf_token %}
+                    <select name="cities" value="{{ city.id }}" class="filter-dropdown survey-dropdown">
+                        {% if city.is_active %}
+                            <option value="publish">Publish</option>
+                        <option value="unpublish">Unpublish</option>
+                        {% else  %}
+                            <option value="unpublish">Unpublish</option>
+                            <option value="publish">Publish</option>
+                        {% endif %}
+                    </select>
+{#                  <input type="submit" class="upload-buttons save-publish" value="Save">
+                </form>
             </div>
         </div>
-        <table class="table-style" id="table-surveys">
+        <table class="table-style">
                 <tr>
                     <th>City/Region</th>
                     <th>Filename</th>

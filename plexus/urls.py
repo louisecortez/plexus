@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('datafiles/', views.datafiles.as_view()),
     path('users/', views.users),
-    path('survey/', views.survey),
+    path('survey/<int:id>/', login_required(views.SurveyDataView.as_view())),
     path('config/<int:city>/config.json', views.ConfigJson.as_view()),
     path('barangays/<int:city>/geo.json', views.BarangayGeojson.as_view()),
     path('barangays/<slug:city>/geo.json', views.BarangayGeojson.as_view()),

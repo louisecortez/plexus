@@ -17,7 +17,7 @@
         <a href="/users" class="header-links">Users</a>
     </div>
 
-    <div class="dropdown header-right">Hello, username!
+    <div class="dropdown header-right">Hello, {{ user.username }}!
         <button class="dropbtn">
           <i class="arrow down"></i>
         </button>
@@ -60,51 +60,19 @@
                 </thead>
                 <tbody>
                     {% for city in cities %}
-                        <tr>
+                        <tr onclick="window.location='survey/{{ city.id }}'">
                             <td>{{city.name}}, {{ city.province.region }}</td>
                             <td>Survey Data for {{city.name}} 2019</td>
                             <td>Admin</td>
                             <td>05/29/2015 05:50:24</td>
                             <td>01/30/2016 18:10:06</td>
-                            {% if city.is_active == true %}
+                            {% if city.is_active %}
                                 <td>Published</td>
                             {% else %}
                                 <td>Unpublished</td>
                             {% endif %}
                         </tr>
                     {%  endfor %}
-{#                    <tr>#}
-{#                        <td>Metro Manila, NCR</td>#}
-{#                        <td>Survey Data for 2019</td>#}
-{#                        <td>Admin</td>#}
-{#                        <td>05/29/2015 05:50:24</td>#}
-{#                        <td>01/30/2016 18:10:06</td>#}
-{#                        <td>Published</td>#}
-{#                    </tr>#}
-{#                    <tr>#}
-{#                        <td>Antipolo/CALABARZON</td>#}
-{#                        <td>Survey Data for 2019</td>#}
-{#                        <td>Admin2</td>#}
-{#                        <td>04/29/2015 05:50:24</td>#}
-{#                        <td>01/30/2016 18:10:06</td>#}
-{#                        <td>Published</td>#}
-{#                    </tr>#}
-{#                    <tr>#}
-{#                        <td>Antipolo/CALABARZON</td>#}
-{#                        <td>Survey Data for 2019</td>#}
-{#                        <td>Admin</td>#}
-{#                        <td>05/29/2015 05:50:24</td>#}
-{#                        <td>01/30/2016 18:10:06</td>#}
-{#                        <td>Published</td>#}
-{#                    </tr>#}
-{#                    <tr>#}
-{#                        <td>Antipolo/CALABARZON</td>#}
-{#                        <td>Survey Data for 2019</td>#}
-{#                        <td>Admin</td>#}
-{#                        <td>05/29/2015 05:50:24</td>#}
-{#                        <td>01/30/2016 18:10:06</td>#}
-{#                        <td>Published</td>#}
-{#                    </tr>#}
                 </tbody>
             </table>
         </div>

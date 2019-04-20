@@ -470,3 +470,14 @@ th, td {
 .survey-dropdown {
     width: 30%;
 }
+
+.save-publish {
+    width:10%;
+    text-align: center;
+}
+
+/* USERS */
+
+.user-dropdown {
+    width:90%;
+}

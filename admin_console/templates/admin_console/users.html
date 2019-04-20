@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/css/styles.css"/>
     <script src="/static/js/admin.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <title>PLEXUS - Manage Users</title>
 </head>
 <body>
@@ -15,7 +17,7 @@
         <a href="/users" class="header-links">Users</a>
     </div>
 
-    <div class="dropdown header-right">Hello, username!
+    <div class="dropdown header-right">Hello, {{ user.username }}!
         <button class="dropbtn">
           <i class="arrow down"></i>
         </button>
@@ -25,8 +27,111 @@
     </div>
 </div>
 
-<div class="users-page">
-    <div class="users-container">
+<div class="index-page">
+    <div class="index-container">
+        <div class="index-left">
+            <div class="index-top">
+                <h1 class="index-text index-top-left">Users</h1>
+            </div>
+            <table class="table-style survey-table-all" id="table-surveys">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Reason</th>
+                        <th>Received</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ninenine</td>
+                        <td>b99@gmail.com</td>
+                        <td>********</td>
+                        <td>Research for school</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lalisa</td>
+                        <td>bpink@yahoo.com</td>
+                        <td>********</td>
+                        <td>Research for work</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>hehe</td>
+                        <td>transpodesire@plexus.com</td>
+                        <td>********</td>
+                        <td>Research for gov stuff</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ninenine</td>
+                        <td>b99@gmail.com</td>
+                        <td>********</td>
+                        <td>Research for school</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>lalisa</td>
+                        <td>bpink@yahoo.com</td>
+                        <td>********</td>
+                        <td>Research for work</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>hehe</td>
+                        <td>transpodesire@plexus.com</td>
+                        <td>********</td>
+                        <td>Research for gov stuff</td>
+                        <td>05/29/2015 05:50:24</td>
+                        <td>
+                            <select class="filter-dropdown user-dropdown">
+                                <option value="approve">Approved</option>
+                                <option value="reject">Rejected</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

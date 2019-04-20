@@ -16,7 +16,6 @@ from .models import DataFile, Barangay, Amenity, City, Region, Province
 
 @login_required
 def index(request):
-    # return render(request, 'admin_console/index.html')
     cities = City.objects.all()
 
     context = {
@@ -593,6 +592,35 @@ def users(request):
     return render(request, 'admin_console/users.html')
 
 
-@login_required
-def survey(request):
-    return render(request, 'admin_console/survey.html')
+# @login_required
+# def survey(request, id):
+#     city = City.objects.get(id=id)
+#
+#     context = {
+#         'city': city
+#     }
+#     return render(request, 'admin_console/survey.html', context)
+#     pass
+
+class SurveyDataView(View):
+    def get(self, request, id):
+        city = City.objects.get(id=id)
+
+        context = {
+            'city': city
+        }
+        return render(request, 'admin_console/survey.html', context)
+        pass
+
+    def post(self, request, id):
+        city = City.objects.get(id=id)
+        selected = request.POST['cities']
+        if selected == 'publish' and not city.is_active:
+            city.is_active = True
+            city.save()
+            print(city.name, " is now active")
+        elif selected == 'unpublish' and city.is_active:
+            city.is_active = False
+            city.save()
+            print(city.name, " is now inactive")
+        return redirect('/')

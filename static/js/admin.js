@@ -9,11 +9,6 @@ window.onload = function() {
 
     var table = document.getElementById("table-surveys");
     if(table != null) {
-      // var divTemp = document.createAttribute('div');
-      // // divTemp.setAttribute('id', 'filter-container');
-      // // var filterTemp =
-      // // divTemp.appendChild(filterTemp);
-
       $('#table-surveys').DataTable();
       $('#table-surveys_filter input').attr("placeholder", "Search survey data...");
     }
