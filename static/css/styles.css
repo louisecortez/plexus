@@ -86,7 +86,7 @@ th, td {
 /* HEADER V2 CSS */
 .header {
     overflow: hidden;
-    background-color: #d829f1;
+    background-color: #1FBAD6;
     display: block;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -111,7 +111,7 @@ th, td {
 }
 
 .header-links:hover {
-    background-color: #e946ed;
+    background-color: #1FBAD6;
     border-radius: 5px;
 }
 
@@ -177,7 +177,7 @@ th, td {
 /* LOGIN PAGE CSS*/
 .login-button {
     width: 30%;
-    background-color: #791d85;
+    background-color: #1FBAD6;
     border: none;
     font-family: 'Work Sans', sans-serif;
     font-weight: 300;
@@ -248,7 +248,7 @@ th, td {
     flex: 10%;
     text-align: center;
     justify-content: center;
-    background-color: #d829f1;
+    background-color: #1FBAD6;
     color:#fbfbfb;
     text-decoration: none;
     border: 1px solid #D0CFCE;
@@ -310,7 +310,7 @@ th, td {
 }
 
 .index-buttons:hover {
-    background-color:#791d85;
+    background-color:#1FBAD6;
     border:none;
     color:#F4F4F4;
     transition-duration:0.5s;
@@ -363,7 +363,7 @@ th, td {
 .previous, .next {
     margin-right: 10px;
     padding:5px;
-    background-color: #d829f1;
+    background-color: #1FBAD6;
     color:#fefefe;
     border-radius: 5px;
     cursor: pointer;
@@ -375,7 +375,7 @@ th, td {
 }
 
 .current {
-    color: #d829f1;
+    color: #1FBAD6;
     font-weight: 400;
     margin-right: 10px;
 }
@@ -431,7 +431,7 @@ th, td {
     border-radius: 5px;
     padding: 10px;
     font-family: 'Work Sans', sans-serif;
-    background-color: #d829f1;
+    background-color: #1FBAD6;
     border:none;
     color: #fefefe;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
