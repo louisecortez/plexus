@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
@@ -11,7 +12,7 @@ import json
 
 from admin_console.forms import UploadFileForm, UserLoginForm
 from admin_console.serializers import DataFileSerializer
-from .models import DataFile, Barangay, Amenity, City, Region, Province
+from .models import DataFile, Barangay, Amenity, City, Region, Province, OD
 
 
 @login_required
@@ -33,6 +34,32 @@ def householdmembers(request):
 
 def barangay(request):
     pass
+
+
+class GetOD(APIView):
+    def get(self, request, city):
+        # cities = City.objects.filter(is_active=True).order_by('province__name', 'name')
+        pairs = OD.objects.filter(origin__city_id=city).values('origin', 'destination').annotate(o=Count('origin'),
+                                                                                                 d=Count('destination'))
+        li = "o_id, o_lat, o_long, d_id, d_lat, d_long, cnt\n"
+        # print(pairs)
+        for p in pairs:
+            # print(p)
+            orig = Barangay.objects.get(id=p['origin'])
+            dest = Barangay.objects.get(id=p['destination'])
+            # li.append({
+            #     "o_id": p['origin'],
+            #     "o_lat": orig.latitude,
+            #     "o_long": orig.longitude,
+            #     "d_id": p['destination'],
+            #     "d_lat": dest.latitude,
+            #     "d_long": dest.longitude,
+            #     "cnt": p['d']
+            # })
+            li += str(p['origin']) + ',' + str(orig.latitude) + ',' + str(orig.longitude) + ',' + str(
+                p['destination']) + ',' + str(dest.latitude) + ',' + str(dest.longitude) + ',' + str(p['d']) + '\n'
+
+        return HttpResponse(li, content_type='application/json', status=200)
 
 
 class GetActiveCities(APIView):
@@ -66,6 +93,38 @@ class BarangayGeojson(APIView):
         return HttpResponse(json.dumps(d), content_type='application/json', status=200)
 
 
+def getPairs(city):
+    config = {
+        "version": "v1",
+        "data": {
+            "id": "pairs",
+            "label": "Pairs",
+            "color": [
+                143,
+                47,
+                191
+            ],
+            "allData": [],
+            "fields": OD.config_fields()
+        }
+    }
+    pairs = OD.objects.filter(origin__city_id=city).values('origin', 'destination').annotate(o=Count('origin'),
+                                                                                             d=Count('destination'))
+    li = []
+    for p in pairs:
+        orig = Barangay.objects.get(id=p['origin'])
+        dest = Barangay.objects.get(id=p['destination'])
+        li.append([p['origin'],
+                   orig.latitude,
+                   orig.longitude,
+                   p['destination'],
+                   dest.latitude,
+                   dest.longitude,
+                   p['d']])
+    config['data']['allData'] = li
+    return config
+
+
 class ConfigJson(APIView):
     def get(self, request, city):
         city = City.objects.get(id=city)
@@ -84,7 +143,7 @@ class ConfigJson(APIView):
                 "fields": Barangay.basic_config_fields()
             }
         }
-        datasets = [city.get_barangay_config(), city.get_amenity_config(), blank_config]
+        datasets = [city.get_barangay_config(), city.get_amenity_config(), blank_config, getPairs(city)]
         info = {"app": "kepler.gl"}
         config = {
             "version": "v1",
@@ -104,18 +163,118 @@ class ConfigJson(APIView):
                             "plotType": "histogram",
                             "yAxis": None
                         },
+                        # {
+                        #     "dataId": "pairs",
+                        #     "id": "2ule5kakj",
+                        #     "name": "cnt",
+                        #     "type": "range",
+                        #     "enlarged": False,
+                        #     "plotType": "histogram",
+                        #     "yAxis": None
+                        # },
                         {
                             "dataId": "amenities",
                             "id": "0jv9s58qg",
                             "name": "class",
                             "type": "multiSelect",
-                            "value": city.amenity_types(),
+                            # "value": city.amenity_types(),
+                            "value": [],
+                            "enlarged": False,
+                            "plotType": "histogram",
+                            "yAxis": None
+                        },
+                        {
+                            "dataId": "pairs",
+                            "id": "khyo98gm8",
+                            "name": "o_id",
+                            "type": "range",
+                            "value": [
+                                0,
+                                0
+                            ],
                             "enlarged": False,
                             "plotType": "histogram",
                             "yAxis": None
                         }
                     ],
                     "layers": [
+                        {
+                            "id": "slcy4jtg",
+                            "type": "arc",
+                            "config": {
+                                "dataId": "pairs",
+                                "label": "Pairs",
+                                "color": [
+                                    255,
+                                    254,
+                                    230
+                                ],
+                                "columns": {
+                                    "lat0": "o_lat",
+                                    "lng0": "o_long",
+                                    "lat1": "d_lat",
+                                    "lng1": "d_long"
+                                },
+                                "isVisible": False,
+                                "visConfig": {
+                                    "opacity": 1,
+                                    "thickness": 5,
+                                    "colorRange": {
+                                        "name": "ColorBrewer Greys-6",
+                                        "type": "sequential",
+                                        "category": "ColorBrewer",
+                                        "colors": [
+                                            "#f7f7f7",
+                                            "#d9d9d9",
+                                            "#bdbdbd",
+                                            "#969696",
+                                            "#636363",
+                                            "#252525"
+                                        ],
+                                        "reversed": False
+                                    },
+                                    "sizeRange": [
+                                        0,
+                                        10
+                                    ],
+                                    "targetColor": [
+                                        38,
+                                        26,
+                                        16
+                                    ],
+                                    "hi-precision": False
+                                },
+                                "textLabel": {
+                                    "field": None,
+                                    "color": [
+                                        255,
+                                        255,
+                                        255
+                                    ],
+                                    "size": 50,
+                                    "offset": [
+                                        0,
+                                        0
+                                    ],
+                                    "anchor": "middle"
+                                }
+                            },
+
+                            "visualChannels": {
+                                "colorField": None,
+                                # "colorField": {
+                                #     "name": "cnt",
+                                #     "type": "integer"
+                                # },
+                                "colorScale": "quantile",
+                                # "sizeField": None,
+                                "sizeField": {
+                                    "name": " cnt",
+                                    "type": "integer"
+                                },
+                                "sizeScale": "linear"
+                            }
+                        },
                         {
                             "id": "jusnudd",
                             "type": "icon",
@@ -166,11 +325,11 @@ class ConfigJson(APIView):
                                 }
                             },
                             "visualChannels": {
-                                "colorField": {
-                                    "name": "class",
-                                    "type": "string"
-                                },
-                                # "colorField": None,
+                                # "colorField": {
+                                #     "name": "class",
+                                #     "type": "string"
+                                # },
+                                "colorField": None,
                                 "colorScale": "ordinal",
                                 "sizeField": None,
                                 "sizeScale": "linear"
@@ -259,19 +418,33 @@ class ConfigJson(APIView):
                                 "visConfig": {
                                     "opacity": 0.8,
                                     "thickness": 0.5,
+                                    # "colorRange": {
+                                    #     "name": "Purple Blue Yellow 6",
+                                    #     "type": "sequential",
+                                    #     "category": "Uber",
+                                    #     "colors": [
+                                    #         "#2B1E3E",
+                                    #         "#343D5E",
+                                    #         "#4F777E",
+                                    #         "#709E87",
+                                    #         "#99BE95",
+                                    #         "#D6DEBF"
+                                    #     ],
+                                    #     "reversed": False
+                                    # },
                                     "colorRange": {
-                                        "name": "Purple Blue Yellow 6",
+                                        "name": "ColorBrewer YlOrRd-6",
                                         "type": "sequential",
-                                        "category": "Uber",
+                                        "category": "ColorBrewer",
                                         "colors": [
-                                            "#2B1E3E",
-                                            "#343D5E",
-                                            "#4F777E",
-                                            "#709E87",
-                                            "#99BE95",
-                                            "#D6DEBF"
+                                            "#bd0026",
+                                            "#f03b20",
+                                            "#fd8d3c",
+                                            "#feb24c",
+                                            "#fed976",
+                                            "#ffffb2"
                                         ],
-                                        "reversed": False
+                                        "reversed": True
                                     },
                                     "radius": 10,
                                     "sizeRange": [
@@ -329,16 +502,14 @@ class ConfigJson(APIView):
                                 "dataId": "outline",
                                 "label": "Barangay outline",
                                 "color": [
-                                    255,
-                                    254,
-                                    230
+                                    128, 128, 128
                                 ],
                                 "columns": {
                                     "geojson": "_geojson"
                                 },
                                 "isVisible": True,
                                 "visConfig": {
-                                    "opacity": 0.8,
+                                    "opacity": 0.05,
                                     "thickness": 0.5,
                                     "colorRange": {
                                         "name": "Global Warming",
@@ -369,7 +540,7 @@ class ConfigJson(APIView):
                                     "elevationScale": 5,
                                     "hi-precision": False,
                                     "stroked": True,
-                                    "filled": False,
+                                    "filled": True,
                                     "enable3d": False,
                                     "wireframe": False
                                 },
@@ -413,7 +584,10 @@ class ConfigJson(APIView):
                                     "class",
                                     "type"
                                 ],
-                                "outline": []
+                                "outline": [],
+                                "pairs": [
+                                    "cnt"
+                                ]
                             },
                             "enabled": True
                         },
@@ -572,7 +746,7 @@ class CityList(View):
             elif city.id not in cities and city.is_active:
                 city.is_active = False
                 city.save()
-        return redirect('/')
+        return redirect('/cities/')
 
 
 @login_required

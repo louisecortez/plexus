@@ -47,7 +47,7 @@ class City(models.Model):
     def json(self):
         return {
             'id': self.id,
-            'name': self.province.name + " - " + self.name
+            'name': self.province.name + ", " + self.name
         }
 
     def get_barangay_config(self):
@@ -96,7 +96,8 @@ class City(models.Model):
         return config
 
     def amenity_types(self):
-        return sorted(list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification',flat=True).distinct()))
+        return sorted(
+            list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification', flat=True).distinct()))
 
     def amenity_colors(self):
         color_map = {
@@ -112,7 +113,6 @@ class City(models.Model):
             'Stores': '#808000'
         }
         return [color_map[a] for a in self.amenity_types()]
-
 
 
 class Barangay(models.Model):
@@ -251,6 +251,11 @@ class Barangay(models.Model):
                 "name": "fairness",
                 "type": "real",
                 "format": ""
+            },
+            {
+                "name": "id",
+                "type": "integer",
+                "format": ""
             }
         ]
 
@@ -266,13 +271,26 @@ class Barangay(models.Model):
 
     def values(self):
         geo = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
+        geo1 = {'type': 'Feature', 'geometry':
+            {
+                "type": "Polygon",
+                'coordinates':
+                    [[
+                        [self.longitude + .0005, self.latitude + .0005],
+                        [self.longitude + .0005, self.latitude - .0005],
+                        [self.longitude - .0005, self.latitude - .0005],
+                        [self.longitude - .0005, self.latitude + .0005],
+                        [self.longitude + .0005, self.latitude + .0005]
+                    ]]
+            },
+                'properties': {}}
         li = [geo, self.name, self.income, self.population, self.latitude, self.longitude,
               round(self.get_td() * 100, 4),
               round(self.spatial * 100, 4),
               round(self.temporal * 100, 4), round(self.economic * 100, 4), round(self.physical * 100, 4),
               round(self.psychological * 100, 4),
               round(self.physiological * 100, 4), round(self.sustainability * 100, 4),
-              round(self.performance * 100, 4), round(self.fairness * 100, 4)]
+              round(self.performance * 100, 4), round(self.fairness * 100, 4), self.id]
         return li
 
 
@@ -408,3 +426,47 @@ class Coefficient(models.Model):
 
     variable = models.CharField(default="", max_length=255)
     coefficient = models.FloatField(default=0.0)
+
+class OD(models.Model):
+    origin = models.ForeignKey(Barangay, on_delete=models.CASCADE, related_name="origin_barangay")
+    destination = models.ForeignKey(Barangay, on_delete=models.CASCADE, related_name="destination_barangay")
+
+    @staticmethod
+    def config_fields():
+        return [
+          {
+            "name": "o_id",
+            "type": "integer",
+            "format": ""
+          },
+          {
+            "name": "o_lat",
+            "type": "real",
+            "format": ""
+          },
+          {
+            "name": "o_long",
+            "type": "real",
+            "format": ""
+          },
+          {
+            "name": "d_id",
+            "type": "integer",
+            "format": ""
+          },
+          {
+            "name": "d_lat",
+            "type": "real",
+            "format": ""
+          },
+          {
+            "name": "d_long",
+            "type": "real",
+            "format": ""
+          },
+          {
+            "name": "cnt",
+            "type": "integer",
+            "format": ""
+          }
+        ]
