@@ -1,8 +1,13 @@
 from django import forms
 from django.contrib.auth import authenticate
 
-class UploadFileForm(forms.Form):
-    file = forms.FileField()
+from admin_console.models import SurveyFile
+
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = SurveyFile
+        fields = ['city', 'file', 'description', 'date_collected']
 
 
 class UserLoginForm(forms.Form):

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from admin_console.models import DataFile
+from admin_console.models import SurveyFile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -18,5 +18,5 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class DataFileSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = DataFile
+        model = SurveyFile
         fields = '__all__'

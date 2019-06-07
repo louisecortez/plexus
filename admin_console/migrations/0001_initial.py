@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
                 ('ownOrRent', models.CharField(default='', max_length=255)),
                 ('numMembers', models.IntegerField(default=0)),
                 ('barangay', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='admin_console.Barangay')),
-                ('datafile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='admin_console.DataFile')),
+                ('datafile', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='admin_console.SurveyFile')),
             ],
         ),
         migrations.CreateModel(

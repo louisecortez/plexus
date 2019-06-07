@@ -11,15 +11,18 @@ import json
 
 from admin_console.forms import UploadFileForm, UserLoginForm
 from admin_console.serializers import DataFileSerializer
-from .models import DataFile, Barangay, Amenity, City, Region, Province
+from .models import SurveyFile, Barangay, Amenity, City, Region, Province
+
+import xlrd
 
 
 @login_required
 def index(request):
     cities = City.objects.all()
-
+    survey_file = SurveyFile.objects.all().order_by('-uploaded_by')
     context = {
         'cities': cities,
+        'survey_file': survey_file
     }
     return render(request, 'admin_console/index.html', context)
     pass
@@ -54,7 +57,7 @@ class GetActiveCities(APIView):
 
 class datafiles(APIView):
     def get(self, request):
-        files = DataFile.objects.all()
+        files = SurveyFile.objects.all()
         serializer = DataFileSerializer(files, many=True)
         return Response(serializer.data)
 
@@ -481,15 +484,17 @@ class UploadDataFile(View):
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return render(request, 'admin_console/home.html', {'form': form})
-        else:
-            print(form.errors)
-            print('fail')
+        # if form.is_valid():
+            # handle_uploaded_file(request.FILES['file'])
+        form.save()
+        # return render(request, 'admin_console/home.html', {'form': form})
+        return redirect('/upload')
+        # else:
+        #     print(form.errors)
+        #     print('fail')
     else:
         form = UploadFileForm()
-    return render(request, 'admin_console/home.html', {'form': form})
+        return render(request, 'admin_console/home.html', {'form': form})
 
 
 @login_required
@@ -506,16 +511,30 @@ def handle_uploaded_file(f):
 @login_required
 def upload(request):
     form = UploadFileForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        file = form.cleaned_data.get('file')
-        print(file)
-        handle_uploaded_file(request.FILES['file'])
-        return redirect('/')
 
+    if request.method == 'POST':
+        if form.is_valid():
+            survey_file = form.save(commit=False)
+            survey_file.user = request.user
+            survey_file.save()
+            # print('start')
+            # wb = openpyxl.load_workbook(survey_file.file)
+            # print(wb.sheetnames)
+            # sheet1 = wb[wb.sheetnames[0]]
+            # print(sheet1['A1'].value)
+            pandas.read_excel(survey_file.file)
+            return redirect('/upload')
+        else:
+            print(form.errors.as_data())
+    cities = City.objects.all().order_by('province__region_id', 'province_id', 'name')
+    regions = Region.objects.all()
     context = {
         'form': form,
+        "cities": cities,
+        'regions': regions
     }
     return render(request, 'admin_console/home.html', context)
+
 
 
 def login_view(request):
@@ -601,6 +620,50 @@ def users(request):
 #     }
 #     return render(request, 'admin_console/survey.html', context)
 #     pass
+
+class SurveyMappingView(View):
+    def get(self, request, id):
+        survey = SurveyFile.objects.get(id=id)
+        if not survey.is_processed:
+            print("--")
+            print(survey.file)
+            file = xlrd.open_workbook(survey.file.name)
+            sheets = []
+            for sheet_name in file.sheet_names():
+                sheet = file.sheet_by_name(sheet_name)
+                sheets.append({
+                    'name': sheet_name,
+                    'cols': sheet.row_values(0)
+                })
+
+            context = {
+                'filetype': 'xlsx',
+                'sheets': sheets
+            }
+            return render(request, 'admin_console/mapping.html', context)
+            pass
+        else:
+            redirect('/')
+        city = City.objects.get(id=id)
+
+        context = {
+            'city': city
+        }
+
+        pass
+
+    def post(self, request, id):
+        # city = City.objects.get(id=id)
+        # selected = request.POST['cities']
+        # if selected == 'publish' and not city.is_active:
+        #     city.is_active = True
+        #     city.save()
+        #     print(city.name, " is now active")
+        # elif selected == 'unpublish' and city.is_active:
+        #     city.is_active = False
+        #     city.save()
+        #     print(city.name, " is now inactive")
+        return redirect('/')
 
 class SurveyDataView(View):
     def get(self, request, id):

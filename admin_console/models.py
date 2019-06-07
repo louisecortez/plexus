@@ -1,15 +1,12 @@
 import ast
+import datetime
 from statistics import mean
 
+from django.contrib.auth.models import AbstractUser, User
 from django.db import models
 
 
 # Create your models here.
-class DataFile(models.Model):
-    name = models.CharField(default="", max_length=255)
-    description = models.TextField(default="")
-
-
 class Region(models.Model):
     name = models.CharField(default="", max_length=255)
 
@@ -39,7 +36,7 @@ class City(models.Model):
     sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.name + ', ' + self.province.name# + ', ' + self.province.region.name
 
     def toggle_active(self):
         self.is_active = not self.is_active
@@ -47,7 +44,7 @@ class City(models.Model):
     def json(self):
         return {
             'id': self.id,
-            'name': self.province.name + " - " + self.name
+            'name': self
         }
 
     def get_barangay_config(self):
@@ -112,7 +109,6 @@ class City(models.Model):
             'Stores': '#808000'
         }
         return [color_map[a] for a in self.amenity_types()]
-
 
 
 class Barangay(models.Model):
@@ -275,36 +271,59 @@ class Barangay(models.Model):
               round(self.performance * 100, 4), round(self.fairness * 100, 4)]
         return li
 
+class SurveyFile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
+    file = models.FileField(upload_to='surveys', null=True, max_length=500)
+    description = models.TextField(default="")
+    date_collected = models.DateField(default=datetime.date.today)
+    uploaded_by = models.DateTimeField(auto_now=True)
+    is_processed = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=False)
 
 class Household(models.Model):
-    datafile = models.ForeignKey(DataFile, on_delete=models.CASCADE)
-    barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE)
-    address = models.CharField(default="", max_length=255)
-    income = models.IntegerField(default=0)
+    submission_id = models.CharField(default="", max_length=255)
+    submission_time = models.CharField(default="", max_length=255, null=True)
+    survey_file = models.ForeignKey(SurveyFile, on_delete=models.CASCADE)
+    barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE, null=True)
+    address = models.CharField(default="", max_length=255, null=True)
+    address_extra = models.TextField(default="", null=True)
+    income = models.FloatField(default=0.0)
     education = models.CharField(default="", max_length=255)
-    numCars = models.IntegerField(default=0)
-    yearsResiding = models.IntegerField(default=0)
-    ownOrRent = models.CharField(default="", max_length=255)
-    numMembers = models.IntegerField(default=0)
+    num_cars = models.IntegerField(default=0)
+    years_residing = models.IntegerField(default=0)
+    own_or_rent = models.CharField(default="", max_length=255)
+    num_members = models.IntegerField(default=0)
 
 
 class HouseholdMember(models.Model):
+    submission_id = models.CharField(default="", max_length=255)
     household = models.ForeignKey(Household, on_delete=models.CASCADE)
     role = models.CharField(default="", max_length=255)
     age = models.IntegerField(default=0)
     occupation = models.CharField(default="", max_length=255)
-    tripPurpose = models.CharField(default="", max_length=255)
-    destAddress = models.CharField(default="", max_length=255)
-    destBarangay = models.ForeignKey(Barangay, on_delete=models.CASCADE)
-    tripMode = models.CharField(default="", max_length=255)
-    travelTime = models.IntegerField(default=0)
-    job = models.CharField(default="", max_length=255)
-    income = models.IntegerField(default=0)
-    gasOrDiesel = models.CharField(default="", max_length=255)
-    fuelCost = models.IntegerField(default=0)
-    isFloodProne = models.BooleanField(default=False)
-    addTime = models.IntegerField(default=0)
-    addCost = models.IntegerField(default=0)
+    job = models.CharField(default="", max_length=255, null=True)
+    income_range = models.CharField(default="", max_length=255)
+    trip_purpose = models.CharField(default="", max_length=255)
+    dest_barangay = models.ForeignKey(Barangay, on_delete=models.CASCADE, null=True)
+    dest_address = models.CharField(default="", max_length=255, null=True)
+    dest_address_extra = models.TextField(default="", null=True)
+
+    trip_mode = models.CharField(default="", max_length=255)
+    travel_time = models.IntegerField(default=0)
+
+    # if car
+    gas_or_diesel = models.CharField(default="", max_length=255, null=True)
+    fuel_cost = models.FloatField(default=0.0)# weekly
+
+    # if public
+    fare = models.FloatField(default=0.0) # one way
+
+    is_flood_prone = models.BooleanField(default=False)
+    will_cancel = models.BooleanField(default=False)
+
+    new_time = models.FloatField(default=0.0, null=True)
+    new_cost = models.FloatField(default=0.0, null=True)
 
 
 class Amenity(models.Model):
@@ -408,3 +427,6 @@ class Coefficient(models.Model):
 
     variable = models.CharField(default="", max_length=255)
     coefficient = models.FloatField(default=0.0)
+
+# class User(AbstractUser):
+#     username = models.

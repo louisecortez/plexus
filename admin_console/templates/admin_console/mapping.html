@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/js/admin.js"></script>
+    <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+    <title>PLEXUS - Upload Data</title>
+
+    <script>
+        /*$(document).ready(function () {
+            $(".filter-dropdown").select2({});
+        });*/
+    </script>
+
+</head>
+<body>
+<!-- Navbar (sit on top) -->
+<div class="header" id="header-fixed">
+    <div class="header-left">
+        <a href="/" class="header-text">PLEXUS Admin | </a>
+        <a href="/cities" class="header-links">Surveys</a>
+        <a href="/users" class="header-links">Users</a>
+    </div>
+
+    <div class="dropdown header-right">Hello, {{ user.username }}!
+        <button class="dropbtn">
+            <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="/accounts/logout">Logout</a>
+        </div>
+    </div>
+</div>
+
+<div class="home-upload-page">
+    <div class="home-upload-container">
+        <h1 class="index-text index-top-left">Mapping of Survey Data</h1>
+        <form id="form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+{#            <div class="upload-fields">#}
+{#                <div class="field-label">City/Municipality</div>#}
+                {#                {{ form.city }}#}
+{#                <select class="filter-dropdown city-upload-dropdown" name="city">#}
+{#                    <option value="" selected="">---------</option>#}
+{#                    {% for region in regions %}#}
+{#                        <optgroup label='{{ region.name }}'>#}
+{#                            {% for province in region.provinces %}#}
+{#                                <optgroup label='&nbsp;&nbsp;{{ province.name }}'>#}
+{#                                    {% for city in province.cities %}#}
+{#                                        <option value="{{ city.id }}">{{ city }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </optgroup>#}
+{#                            {% endfor %}#}
+{#                        </optgroup>#}
+{#                    {% endfor %}#}
+{#                </select>#}
+{#            </div>#}
+
+
+            <div class="upload-fields">
+                <select class="filter-dropdown city-upload-dropdown" name="city">
+                    <option value="" selected="">---------</option>
+                    {% for sheet in sheets %}
+                        <optgroup label='{{ sheet.name }}'>
+                            {% for col in sheet.cols %}
+                                <option value="{{ forloop.parentloop.counter0 }}-{{ forloop.counter0 }}">{{ col }}</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            {#<input type="file" id="file" name="file" accept=".csv" />#}
+{#            <div class="upload-fields">#}
+{#                <div class="field-label">Upload File</div>#}
+{#                <div class="upload-box">{{ form.file }}</div>#}
+                {#                {{ form.as_p }}#}
+                {#                <input type="file" name="file" required="" id="id_file">#}
+{#            </div>#}
+{#            <div class="upload-fields">#}
+{#                <div class="field-label">When was it collected?</div>#}
+{#                <input type="date" class="date-picker" name="date_collected">#}
+{#            </div>#}
+{#            <div class="upload-fields">#}
+{#                <div class="field-label">Description</div>#}
+{#                {{ form.description }}#}
+{#            </div>#}
+            {#            <input type="submit" class="upload-buttons" value="Upload & Preview this data >">#}
+        </form>
+    </div>
+</div>
+</body>
+</html>
