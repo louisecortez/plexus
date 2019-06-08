@@ -9,6 +9,42 @@ class UploadFileForm(forms.ModelForm):
         model = SurveyFile
         fields = ['city', 'file', 'description', 'date_collected']
 
+class MappingForm(forms.Form):
+    submission_id = forms.ChoiceField(choices=(), required=True)
+    submission_time = forms.ChoiceField(choices=(), required=True)
+    survey_file = forms.ChoiceField(choices=(), required=True)
+    barangay = forms.ChoiceField(choices=(), required=True)
+    address = forms.ChoiceField(choices=(), required=True)
+    address_extra = forms.ChoiceField(choices=(), required=True)
+    income = forms.ChoiceField(choices=(), required=True)
+    education = forms.ChoiceField(choices=(), required=True)
+    num_cars = forms.ChoiceField(choices=(), required=True)
+    years_residing = forms.ChoiceField(choices=(), required=True)
+    own_or_rent = forms.ChoiceField(choices=(), required=True)
+    num_members = forms.ChoiceField(choices=(), required=True)
+    role = forms.ChoiceField(choices=(), required=True)
+    age = forms.ChoiceField(choices=(), required=True)
+    occupation = forms.ChoiceField(choices=(), required=True)
+    job = forms.ChoiceField(choices=(), required=True)
+    income_range = forms.ChoiceField(choices=(), required=True)
+    trip_purpose = forms.ChoiceField(choices=(), required=True)
+    dest_barangay = forms.ChoiceField(choices=(), required=True)
+    dest_address = forms.ChoiceField(choices=(), required=True)
+    dest_address_extra = forms.ChoiceField(choices=(), required=True)
+    trip_mode = forms.ChoiceField(choices=(), required=True)
+    travel_time = forms.ChoiceField(choices=(), required=True)
+    gas_or_diesel = forms.ChoiceField(choices=(), required=True)
+    fuel_cost = forms.ChoiceField(choices=(), required=True)
+    fare = forms.ChoiceField(choices=(), required=True)
+    is_flood_prone = forms.ChoiceField(choices=(), required=True)
+    will_cancel = forms.ChoiceField(choices=(), required=True)
+    new_time = forms.ChoiceField(choices=(), required=True)
+    new_cost = forms.ChoiceField(choices=(), required=True)
+
+    def __init__(self, choices, *args, **kwargs):
+        super(MappingForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            field.choices = choices
 
 class UserLoginForm(forms.Form):
     username = forms.CharField()

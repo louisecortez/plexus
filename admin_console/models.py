@@ -247,6 +247,11 @@ class Barangay(models.Model):
                 "name": "fairness",
                 "type": "real",
                 "format": ""
+            },
+            {
+                "name": "id",
+                "type": "integer",
+                "format": ""
             }
         ]
 
@@ -268,7 +273,7 @@ class Barangay(models.Model):
               round(self.temporal * 100, 4), round(self.economic * 100, 4), round(self.physical * 100, 4),
               round(self.psychological * 100, 4),
               round(self.physiological * 100, 4), round(self.sustainability * 100, 4),
-              round(self.performance * 100, 4), round(self.fairness * 100, 4)]
+              round(self.performance * 100, 4), round(self.fairness * 100, 4), self.id]
         return li
 
 class SurveyFile(models.Model):
@@ -297,11 +302,13 @@ class Household(models.Model):
 
 
 class HouseholdMember(models.Model):
-    submission_id = models.CharField(default="", max_length=255)
     household = models.ForeignKey(Household, on_delete=models.CASCADE)
+    submission_id = models.CharField(default="", max_length=255)
     role = models.CharField(default="", max_length=255)
     age = models.IntegerField(default=0)
     occupation = models.CharField(default="", max_length=255)
+
+class MainHouseholdMember(HouseholdMember):
     job = models.CharField(default="", max_length=255, null=True)
     income_range = models.CharField(default="", max_length=255)
     trip_purpose = models.CharField(default="", max_length=255)
@@ -324,6 +331,46 @@ class HouseholdMember(models.Model):
 
     new_time = models.FloatField(default=0.0, null=True)
     new_cost = models.FloatField(default=0.0, null=True)
+
+    @staticmethod
+    def config_fields():
+        return [
+            {
+                "name": "o_id",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "o_lat",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "o_long",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "d_id",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "d_lat",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "d_long",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "cnt",
+                "type": "integer",
+                "format": ""
+            }
+        ]
 
 
 class Amenity(models.Model):

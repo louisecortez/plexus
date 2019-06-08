@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="/static/css/styles.css"/>
     <script src="/static/js/admin.js"></script>
     <script type="text/javascript" charset="utf8" src="/static/js/jquery-3.4.0.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <title>HOME - Admin</title>
 </head>
 <body>
@@ -19,10 +20,10 @@
 
     <div class="dropdown header-right">Hello, {{ user.username }}!
         <button class="dropbtn">
-          <i class="arrow down"></i>
+            <i class="arrow down"></i>
         </button>
         <div class="dropdown-content">
-          <a href="/accounts/logout">Logout</a>
+            <a href="/accounts/logout">Logout</a>
         </div>
     </div>
 </div>
@@ -34,45 +35,51 @@
                 <h1 class="index-text index-top-left">Surveys</h1>
                 <a href="/upload" class="index-top-right">Upload Data</a>
             </div>
-{#            <div id="filter-container">#}
-{#                <form class="search-container">#}
-{#                    <input type="text" id="search-bar" placeholder="Search survey data...">#}
-{#                    <a href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a>#}
-{#                </form>#}
-{#                <span class="filter-text">Show:</span>#}
-{#                <select class="filter-dropdown">#}
-{#                    <option value="survey-all">All</option>#}
-{#                    <option value="published">Published</option>#}
-{#                    <option value="unpublished">Unpublished</option>#}
-{#                </select>#}
-{#            </div>#}
+            {#            <div id="filter-container">#}
+            {#                <form class="search-container">#}
+            {#                    <input type="text" id="search-bar" placeholder="Search survey data...">#}
+            {#                    <a href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a>#}
+            {#                </form>#}
+            {#                <span class="filter-text">Show:</span>#}
+            {#                <select class="filter-dropdown">#}
+            {#                    <option value="survey-all">All</option>#}
+            {#                    <option value="published">Published</option>#}
+            {#                    <option value="unpublished">Unpublished</option>#}
+            {#                </select>#}
+            {#            </div>#}
 
             <table class="table-style survey-table-all" id="table-surveys">
                 <thead>
-                    <tr>
-                        <th>City/Province</th>
-                        <th>Region</th>
-                        <th>Uploaded By</th>
-                        <th>Date Collected</th>
-                        <th>Date Uploaded</th>
-                        <th>Status</th>
-                    </tr>
+                <tr>
+                    <th>City/Province</th>
+                    <th>Region</th>
+                    <th>Uploaded By</th>
+                    <th>Date Collected</th>
+                    <th>Date Uploaded</th>
+                    <th>Is Processed</th>
+                    <th>Status</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for survey in survey_file %}
-                        <tr> <!--onclick="window.location='survey/{{ city.id }}'"-->
-                            <td>{{survey.city}}</td>
-                            <td>{{ survey.city.province.region.name }}</td>
-                            <td>{{ survey.user.get_full_name }}</td>
-                            <td>{{ survey.date_collected }}</td>
-                            <td>{{ survey.uploaded_by }}</td>
-                            {% if survey.is_published %}
-                                <td>Published</td>
-                            {% else %}
-                                <td>Unpublished</td>
-                            {% endif %}
-                        </tr>
-                    {%  endfor %}
+                {% for survey in survey_file %}
+                    <tr> <!--onclick="window.location='survey/{{ city.id }}'"-->
+                        <td>{{ survey.city }}</td>
+                        <td>{{ survey.city.province.region.name }}</td>
+                        <td>{{ survey.user.get_full_name }}</td>
+                        <td>{{ survey.date_collected }}</td>
+                        <td>{{ survey.uploaded_by }}</td>
+                        {% if survey.is_processed %}
+                            <td>Processed</td>
+                        {% else %}
+                            <td>Unprocessed</td>
+                        {% endif %}
+                        {% if survey.is_published %}
+                            <td>Published</td>
+                        {% else %}
+                            <td>Unpublished</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
