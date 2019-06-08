@@ -279,7 +279,7 @@ class Barangay(models.Model):
 class SurveyFile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
-    file = models.FileField(upload_to='surveys', null=True, max_length=500)
+    file = models.FileField(upload_to='upload/survey/', null=True, max_length=500)
     description = models.TextField(default="")
     date_collected = models.DateField(default=datetime.date.today)
     uploaded_by = models.DateTimeField(auto_now=True)
