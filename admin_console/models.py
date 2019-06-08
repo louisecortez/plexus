@@ -36,7 +36,7 @@ class City(models.Model):
     sid = models.CharField(default="", max_length=255)
 
     def __str__(self):
-        return self.name + ', ' + self.province.name# + ', ' + self.province.region.name
+        return self.name + ', ' + self.province.name
 
     def toggle_active(self):
         self.is_active = not self.is_active
@@ -44,7 +44,7 @@ class City(models.Model):
     def json(self):
         return {
             'id': self.id,
-            'name': self
+            'name': self.name + ', ' + self.province.name
         }
 
     def get_barangay_config(self):

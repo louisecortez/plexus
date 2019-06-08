@@ -74,7 +74,7 @@ def getPairs(city):
         }
     }
 
-    pairs = MainHouseholdMember.objects.filter(household__survey_file__city_id=city).values('household__barangay', 'dest_barangay').annotate(o=Count('household__barangay'),d=Count('dest_barangay'))
+    pairs = MainHouseholdMember.objects.filter(household__survey_file__city_id=city, dest_barangay__isnull=False, household__barangay__isnull=False).values('household__barangay', 'dest_barangay').annotate(o=Count('household__barangay'),d=Count('dest_barangay'))
     # pairs = OD.objects.filter(origin__city_id=city).values('origin', 'destination').annotate(o=Count('origin'),
     #                                                                                          d=Count('destination'))
 
