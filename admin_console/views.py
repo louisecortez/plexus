@@ -306,7 +306,7 @@ class ConfigJson(APIView):
                                     "name": "desirability",
                                     "type": "real"
                                 },
-                                "colorScale": "quantile",
+                                "colorScale": "quantize",
                                 "sizeField": None,
                                 "sizeScale": "linear",
                                 "heightField": None,
