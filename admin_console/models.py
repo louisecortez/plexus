@@ -250,7 +250,7 @@ class Barangay(models.Model):
             },
             {
                 "name": "id",
-                "type": "integer",
+                "type": "string",
                 "format": ""
             }
         ]
@@ -273,7 +273,7 @@ class Barangay(models.Model):
               round(self.temporal * 100, 4), round(self.economic * 100, 4), round(self.physical * 100, 4),
               round(self.psychological * 100, 4),
               round(self.physiological * 100, 4), round(self.sustainability * 100, 4),
-              round(self.performance * 100, 4), round(self.fairness * 100, 4), self.id]
+              round(self.performance * 100, 4), round(self.fairness * 100, 4), str(self.id)]
         return li
 
 class SurveyFile(models.Model):
@@ -337,7 +337,7 @@ class MainHouseholdMember(HouseholdMember):
         return [
             {
                 "name": "o_id",
-                "type": "integer",
+                "type": "string",
                 "format": ""
             },
             {
@@ -352,7 +352,7 @@ class MainHouseholdMember(HouseholdMember):
             },
             {
                 "name": "d_id",
-                "type": "integer",
+                "type": "string",
                 "format": ""
             },
             {

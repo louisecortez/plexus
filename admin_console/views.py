@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from django.http import HttpResponse
 import json
 
+from admin_console import kepler_config
 from admin_console.forms import UploadFileForm, UserLoginForm
 from admin_console.serializers import DataFileSerializer
 from .models import SurveyFile, Barangay, Amenity, City, Region, Province, Household, HouseholdMember, \
@@ -58,6 +59,7 @@ class GetActiveCities(APIView):
 
         return HttpResponse(json.dumps(li), content_type='application/json', status=200)
 
+
 def getPairs(city):
     config = {
         "version": "v1",
@@ -74,7 +76,10 @@ def getPairs(city):
         }
     }
 
-    pairs = MainHouseholdMember.objects.filter(household__survey_file__city_id=city, dest_barangay__isnull=False, household__barangay__isnull=False).values('household__barangay', 'dest_barangay').annotate(o=Count('household__barangay'),d=Count('dest_barangay'))
+    pairs = MainHouseholdMember.objects.filter(household__survey_file__city_id=city, dest_barangay__isnull=False,
+                                               household__barangay__isnull=False).values('household__barangay',
+                                                                                         'dest_barangay').annotate(
+        o=Count('household__barangay'), d=Count('dest_barangay'))
     # pairs = OD.objects.filter(origin__city_id=city).values('origin', 'destination').annotate(o=Count('origin'),
     #                                                                                          d=Count('destination'))
 
@@ -82,15 +87,16 @@ def getPairs(city):
     for p in pairs:
         orig = Barangay.objects.get(id=p['household__barangay'])
         dest = Barangay.objects.get(id=p['dest_barangay'])
-        li.append([p['household__barangay'],
+        li.append([str(p['household__barangay']),
                    orig.latitude,
                    orig.longitude,
-                   p['dest_barangay'],
+                   str(p['dest_barangay']),
                    dest.latitude,
                    dest.longitude,
                    p['d']])
     config['data']['allData'] = li
     return config
+
 
 class datafiles(APIView):
     def get(self, request):
@@ -115,7 +121,7 @@ class BarangayGeojson(APIView):
 class ConfigJson(APIView):
     def get(self, request, city):
         city = City.objects.get(id=city)
-        print(city.amenity_types())
+        # print(city.amenity_types())
         blank_config = {
             "version": "v1",
             "data": {
@@ -132,439 +138,7 @@ class ConfigJson(APIView):
         }
         datasets = [city.get_barangay_config(), city.get_amenity_config(), blank_config, getPairs(city)]
         info = {"app": "kepler.gl"}
-        config = {
-            "version": "v1",
-            "config": {
-                "visState": {
-                    "filters": [
-                        {
-                            "dataId": "barangays",
-                            "id": "8whi6i9v",
-                            "name": "desirability",
-                            "type": "range",
-                            "value": [
-                                0,
-                                100
-                            ],
-                            "enlarged": False,
-                            "plotType": "histogram",
-                            "yAxis": None
-                        },
-                        {
-                            "dataId": "amenities",
-                            "id": "0jv9s58qg",
-                            "name": "class",
-                            "type": "multiSelect",
-                            # "value": city.amenity_types(),
-                            "value": [],
-                            "enlarged": False,
-                            "plotType": "histogram",
-                            "yAxis": None
-                        },
-                        {
-                            "dataId": "pairs",
-                            "id": "khyo98gm8",
-                            "name": "o_id",
-                            "type": "range",
-                            "value": [
-                                0,
-                                0
-                            ],
-                            "enlarged": False,
-                            "plotType": "histogram",
-                            "yAxis": None
-                        }
-                    ],
-                    "layers": [
-                        {
-                            "id": "slcy4jtg",
-                            "type": "arc",
-                            "config": {
-                                "dataId": "pairs",
-                                "label": "Pairs",
-                                "color": [
-                                    255,
-                                    254,
-                                    230
-                                ],
-                                "columns": {
-                                    "lat0": "o_lat",
-                                    "lng0": "o_long",
-                                    "lat1": "d_lat",
-                                    "lng1": "d_long"
-                                },
-                                "isVisible": False,
-                                "visConfig": {
-                                    "opacity": 1,
-                                    "thickness": 5,
-                                    "colorRange": {
-                                        "name": "ColorBrewer Greys-6",
-                                        "type": "sequential",
-                                        "category": "ColorBrewer",
-                                        "colors": [
-                                            "#f7f7f7",
-                                            "#d9d9d9",
-                                            "#bdbdbd",
-                                            "#969696",
-                                            "#636363",
-                                            "#252525"
-                                        ],
-                                        "reversed": False
-                                    },
-                                    "sizeRange": [
-                                        0,
-                                        10
-                                    ],
-                                    "targetColor": [
-                                        38,
-                                        26,
-                                        16
-                                    ],
-                                    "hi-precision": False
-                                },
-                                "textLabel": {
-                                    "field": None,
-                                    "color": [
-                                        255,
-                                        255,
-                                        255
-                                    ],
-                                    "size": 50,
-                                    "offset": [
-                                        0,
-                                        0
-                                    ],
-                                    "anchor": "middle"
-                                }
-                            },
-
-                            "visualChannels": {
-                                "colorField": None,
-                                # "colorField": {
-                                #     "name": "cnt",
-                                #     "type": "integer"
-                                # },
-                                "colorScale": "quantile",
-                                # "sizeField": None,
-                                "sizeField": {
-                                    "name": " cnt",
-                                    "type": "integer"
-                                },
-                                "sizeScale": "linear"
-                            }
-                        },
-                        {
-                            "id": "jusnudd",
-                            "type": "icon",
-                            "config": {
-                                "dataId": "amenities",
-                                "label": "Amenity",
-                                "color": [
-                                    255,
-                                    254,
-                                    230
-                                ],
-                                "columns": {
-                                    "lat": "latitude",
-                                    "lng": "longitude",
-                                    "icon": "icon"
-                                },
-                                "isVisible": True,
-                                "visConfig": {
-                                    "radius": 35,
-                                    "fixedRadius": False,
-                                    "opacity": 1.0,
-                                    "colorRange": {
-                                        "name": "Uber Viz Qualitative 4",
-                                        "type": "qualitative",
-                                        "category": "Uber",
-                                        "colors": city.amenity_colors(),
-                                        "reversed": False
-                                    },
-                                    "radiusRange": [
-                                        0,
-                                        50
-                                    ],
-                                    "hi-precision": False
-                                },
-                                "textLabel": {
-                                    "field": None,
-                                    "color": [
-                                        255,
-                                        255,
-                                        255
-                                    ],
-                                    "size": 50,
-                                    "offset": [
-                                        0,
-                                        0
-                                    ],
-                                    "anchor": "middle"
-                                }
-                            },
-                            "visualChannels": {
-                                # "colorField": {
-                                #     "name": "class",
-                                #     "type": "string"
-                                # },
-                                "colorField": None,
-                                "colorScale": "ordinal",
-                                "sizeField": None,
-                                "sizeScale": "linear"
-                            }
-                        },
-                        {
-                            "id": "xrf8f2s",
-                            "type": "point",
-                            "config": {
-                                "dataId": "barangays",
-                                "label": "Center",
-                                "color": [
-                                    23,
-                                    184,
-                                    190
-                                ],
-                                "columns": {
-                                    "lat": "latitude",
-                                    "lng": "longitude",
-                                    "altitude": None
-                                },
-                                "isVisible": False,
-                                "visConfig": {
-                                    "radius": 10,
-                                    "fixedRadius": False,
-                                    "opacity": 0.8,
-                                    "outline": False,
-                                    "thickness": 2,
-                                    "colorRange": {
-                                        "name": "Global Warming",
-                                        "type": "sequential",
-                                        "category": "Uber",
-                                        "colors": [
-                                            "#5A1846",
-                                            "#900C3F",
-                                            "#C70039",
-                                            "#E3611C",
-                                            "#F1920E",
-                                            "#FFC300"
-                                        ]
-                                    },
-                                    "radiusRange": [
-                                        0,
-                                        50
-                                    ],
-                                    "hi-precision": False
-                                },
-                                "textLabel": {
-                                    "field": None,
-                                    "color": [
-                                        255,
-                                        255,
-                                        255
-                                    ],
-                                    "size": 50,
-                                    "offset": [
-                                        0,
-                                        0
-                                    ],
-                                    "anchor": "middle"
-                                }
-                            },
-                            "visualChannels": {
-                                "colorField": None,
-                                "colorScale": "quantile",
-                                "sizeField": None,
-                                "sizeScale": "linear"
-                            }
-                        },
-                        {
-                            "id": "izm95sg",
-                            "type": "geojson",
-                            "config": {
-                                "dataId": "barangays",
-                                "label": "Barangay",
-                                "color": [
-                                    246,
-                                    209,
-                                    138,
-                                    255
-                                ],
-                                "columns": {
-                                    "geojson": "_geojson"
-                                },
-                                "isVisible": True,
-                                "visConfig": {
-                                    "opacity": 0.8,
-                                    "thickness": 0.5,
-                                    "colorRange": {
-                                        "name": "ColorBrewer YlOrRd-6",
-                                        "type": "sequential",
-                                        "category": "ColorBrewer",
-                                        "colors": [
-                                            "#bd0026",
-                                            "#f03b20",
-                                            "#fd8d3c",
-                                            "#feb24c",
-                                            "#fed976",
-                                            "#ffffb2"
-                                        ],
-                                        "reversed": True
-                                    },
-                                    "radius": 10,
-                                    "sizeRange": [
-                                        0,
-                                        10
-                                    ],
-                                    "radiusRange": [
-                                        0,
-                                        50
-                                    ],
-                                    "heightRange": [
-                                        0,
-                                        500
-                                    ],
-                                    "elevationScale": 5,
-                                    "hi-precision": False,
-                                    "stroked": True,
-                                    "filled": True,
-                                    "enable3d": False,
-                                    "wireframe": False
-                                },
-                                "textLabel": {
-                                    "field": None,
-                                    "color": [
-                                        255,
-                                        255,
-                                        255
-                                    ],
-                                    "size": 50,
-                                    "offset": [
-                                        0,
-                                        0
-                                    ],
-                                    "anchor": "middle"
-                                }
-                            },
-                            "visualChannels": {
-                                "colorField": {
-                                    "name": "desirability",
-                                    "type": "real"
-                                },
-                                "colorScale": "quantile",
-                                "sizeField": None,
-                                "sizeScale": "linear",
-                                "heightField": None,
-                                "heightScale": "linear",
-                                "radiusField": None,
-                                "radiusScale": "linear"
-                            }
-                        },
-                        {
-                            "id": "lldqtu",
-                            "type": "geojson",
-                            "config": {
-                                "dataId": "outline",
-                                "label": "Barangay outline",
-                                "color": [
-                                    128, 128, 128
-                                ],
-                                "columns": {
-                                    "geojson": "_geojson"
-                                },
-                                "isVisible": True,
-                                "visConfig": {
-                                    "opacity": 0.05,
-                                    "thickness": 0.5,
-                                    "colorRange": {
-                                        "name": "Global Warming",
-                                        "type": "sequential",
-                                        "category": "Uber",
-                                        "colors": [
-                                            "#5A1846",
-                                            "#900C3F",
-                                            "#C70039",
-                                            "#E3611C",
-                                            "#F1920E",
-                                            "#FFC300"
-                                        ]
-                                    },
-                                    "radius": 10,
-                                    "sizeRange": [
-                                        0,
-                                        10
-                                    ],
-                                    "radiusRange": [
-                                        0,
-                                        50
-                                    ],
-                                    "heightRange": [
-                                        0,
-                                        500
-                                    ],
-                                    "elevationScale": 5,
-                                    "hi-precision": False,
-                                    "stroked": True,
-                                    "filled": True,
-                                    "enable3d": False,
-                                    "wireframe": False
-                                },
-                                "textLabel": {
-                                    "field": None,
-                                    "color": [
-                                        255,
-                                        255,
-                                        255
-                                    ],
-                                    "size": 50,
-                                    "offset": [
-                                        0,
-                                        0
-                                    ],
-                                    "anchor": "middle"
-                                }
-                            },
-                            "visualChannels": {
-                                "colorField": None,
-                                "colorScale": "quantile",
-                                "sizeField": None,
-                                "sizeScale": "linear",
-                                "heightField": None,
-                                "heightScale": "linear",
-                                "radiusField": None,
-                                "radiusScale": "linear"
-                            }
-                        }
-                    ],
-                    "interactionConfig": {
-                        "tooltip": {
-                            "fieldsToShow": {
-                                "barangays": [
-                                    "name",
-                                    "desirability"
-                                ],
-                                "amenities": [
-                                    "name",
-                                    "barangay",
-                                    "class",
-                                    "type"
-                                ],
-                                "outline": [],
-                                "pairs": [
-                                    "cnt"
-                                ]
-                            },
-                            "enabled": True
-                        },
-                        "brush": {
-                            "size": 0.5,
-                            "enabled": False
-                        }
-                    },
-                    "layerBlending": "normal",
-                    "splitMaps": []
-                }
-            }
-        }
+        config = kepler_config.json(city)
 
         j = {
             "datasets": datasets,
@@ -614,7 +188,7 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         # if form.is_valid():
-            # handle_uploaded_file(request.FILES['file'])
+        # handle_uploaded_file(request.FILES['file'])
         form.save()
         # return render(request, 'admin_console/home.html', {'form': form})
         return redirect('/upload')
@@ -663,7 +237,6 @@ def upload(request):
         'regions': regions
     }
     return render(request, 'admin_console/home.html', context)
-
 
 
 def login_view(request):
@@ -750,7 +323,7 @@ def users(request):
 #     return render(request, 'admin_console/survey.html', context)
 #     pass
 
-def process_workbook(wb, survey_id):
+def process_workbook(wb, survey_id, city_id):
     # Household
     sheet1 = wb.sheet_by_index(0)
 
@@ -760,12 +333,12 @@ def process_workbook(wb, survey_id):
             household = Household(
                 survey_file_id=survey_id,
                 address=row[2],
-                barangay=Barangay.objects.filter(name=row[3]).first(),
+                barangay=Barangay.objects.filter(name=row[3], city_id=city_id).first(),
                 address_extra=row[4],
                 income=float(row[5]),
                 education=row[6],
-                num_cars=int((re.findall('\d+',row[7])+['0'])[0]),
-                years_residing=int((re.findall('\d+',row[8])+['0'])[0]),
+                num_cars=int((re.findall('\d+', row[7]) + ['0'])[0]),
+                years_residing=int((re.findall('\d+', row[8]) + ['0'])[0]),
                 own_or_rent=row[9],
                 num_members=int(row[10]),
                 submission_id=row[17],
@@ -773,14 +346,14 @@ def process_workbook(wb, survey_id):
             )
             household.save()
     print("DONE HOUSEHOLD")
-        # Household Member
+    # Household Member
     sheet2 = wb.sheet_by_index(1)
 
     for i in range(1, sheet2.nrows):
         row = sheet2.row_values(i)
         if int(row[1]) > 6:
             member = MainHouseholdMember(
-                household=Household.objects.filter(survey_file_id=survey_id,submission_id=row[250]).first(),
+                household=Household.objects.filter(survey_file_id=survey_id, submission_id=row[250]).first(),
                 role=row[0],
                 age=int(row[1]),
                 occupation=row[2],
@@ -788,7 +361,7 @@ def process_workbook(wb, survey_id):
                 income_range=row[4] or row[5],
                 trip_purpose=row[6],
                 dest_address=row[8],
-                dest_barangay=Barangay.objects.filter(name=row[9]).first(),
+                dest_barangay=Barangay.objects.filter(name=row[9], city_id=city_id).first(),
                 dest_address_extra=row[10],
                 trip_mode=row[17] or row[11],
                 gas_or_diesel=row[12],
@@ -821,6 +394,7 @@ def process_workbook(wb, survey_id):
     print("DONE HOUSEHOLD MEMBER EXTRA")
     return True
 
+
 class SurveyMappingView(View):
     def get(self, request, id):
         survey = SurveyFile.objects.get(id=id)
@@ -828,7 +402,7 @@ class SurveyMappingView(View):
             print("start")
             file = xlrd.open_workbook(survey.file.name)
             print("load")
-            if process_workbook(file, id):
+            if process_workbook(file, id, survey.city_id):
                 survey.is_processed = True
                 survey.save()
             print("end")
@@ -868,6 +442,7 @@ class SurveyMappingView(View):
         #     city.save()
         #     print(city.name, " is now inactive")
         return redirect('/')
+
 
 class SurveyDataView(View):
     def get(self, request, id):
