@@ -366,7 +366,7 @@ class MainHouseholdMember(HouseholdMember):
                 "format": ""
             },
             {
-                "name": "cnt",
+                "name": "count",
                 "type": "integer",
                 "format": ""
             }
