@@ -311,7 +311,7 @@ def json(city):
                                 "name": "desirability",
                                 "type": "real"
                             },
-                            "colorScale": "quantile",
+                            "colorScale": "quantize",
                             "sizeField": None,
                             "sizeScale": "linear",
                             "heightField": None,
