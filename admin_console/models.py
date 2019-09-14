@@ -7,6 +7,9 @@ from django.db import models
 
 
 # Create your models here.
+from django.db.models import Q, Count
+
+
 class Region(models.Model):
     name = models.CharField(default="", max_length=255)
 
@@ -87,13 +90,13 @@ class City(models.Model):
         }
 
         for barangay in self.barangay_set.all():
-            for amenity in barangay.amenity_set.all():
+            for amenity in barangay.amenity_set.filter(~Q(classification="Others")):
                 config['data']['allData'].append(amenity.values())
 
         return config
 
     def amenity_types(self):
-        return sorted(list(Amenity.objects.filter(barangay__city_id=self.id).values_list('classification',flat=True).distinct()))
+        return sorted(list(Amenity.objects.filter(barangay__city_id=self.id).exclude(classification="Others").values_list('classification',flat=True).distinct()))
 
     def amenity_colors(self):
         color_map = {
@@ -103,7 +106,7 @@ class City(models.Model):
             'Food Establishments': '#fabebe',
             'Market and Convenience Stores': '#42d4f4',
             'Medical Facilities': '#ffe119',
-            'Others': '#a9a9a9',
+            # 'Others': '#a9a9a9',
             'Recreational Facilities': '#f032e6',
             'Service Shops': '#ffffff',
             'Stores': '#808000'
@@ -129,6 +132,7 @@ class Barangay(models.Model):
     performance = models.FloatField(default=0.0)
     fairness = models.FloatField(default=0.0)
     sid = models.CharField(default="", max_length=255)
+    area = models.FloatField(default=0.0)
 
     def __str__(self):
         return self.name
@@ -252,7 +256,72 @@ class Barangay(models.Model):
                 "name": "id",
                 "type": "string",
                 "format": ""
-            }
+            },
+            {
+                "name": "max_dist",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "min_dist",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "avg_dist",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "max_time",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "min_time",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "avg_time",
+                "type": "real",
+                "format": ""
+            },
+            {
+                "name": "car",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "uv",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "taxi",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "train",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "jeep",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "bus",
+                "type": "integer",
+                "format": ""
+            },
+            {
+                "name": "other",
+                "type": "integer",
+                "format": ""
+            },
         ]
 
     @staticmethod
@@ -266,6 +335,24 @@ class Barangay(models.Model):
         ]
 
     def values(self):
+        members = MainHouseholdMember.objects.filter(household__barangay_id=self.id, dest_barangay__isnull=False)
+        modes = members.values('trip_mode').annotate(cnt=Count('trip_mode'))
+        default_mode = {
+            'car' : 0,
+            'uv express': 0,
+            'taxi': 0,
+            'train': 0,
+            'jeepney': 0,
+            'bus': 0,
+            'other': 0
+        }
+        for mode in modes:
+            if mode['trip_mode'].lower() in default_mode:
+                default_mode[str(mode['trip_mode']).lower()] += mode['cnt']
+            else:
+                default_mode['other'] += mode['cnt']
+        # print([float(i) for i in members.values_list('travel_distance', flat=True)])
+        # print(default_mode)
         geo = {'type': 'Feature', 'geometry': ast.literal_eval(self.geojson), 'properties': {}}
         li = [geo, self.name, self.income, self.population, self.latitude, self.longitude,
               round(self.get_td() * 100, 4),
@@ -273,7 +360,21 @@ class Barangay(models.Model):
               round(self.temporal * 100, 4), round(self.economic * 100, 4), round(self.physical * 100, 4),
               round(self.psychological * 100, 4),
               round(self.physiological * 100, 4), round(self.sustainability * 100, 4),
-              round(self.performance * 100, 4), round(self.fairness * 100, 4), str(self.id)]
+              round(self.performance * 100, 4), round(self.fairness * 100, 4), str(self.id),
+              max([float(i) for i in members.values_list('travel_distance', flat=True)],default=0), # max dist
+              min([float(i) for i in members.values_list('travel_distance', flat=True)], default=0),  # min dist
+              0 if len(members) == 0 else mean([float(i) for i in members.values_list('travel_distance', flat=True)]),  # avg dist
+              max([float(i) for i in members.values_list('travel_time', flat=True)], default=0),  # max time
+              min([float(i) for i in members.values_list('travel_time', flat=True)], default=0),  # min time
+              0 if len(members) == 0 else mean([float(i) for i in members.values_list('travel_time', flat=True)]),  # avg time
+              default_mode['car'],
+              default_mode['uv express'],
+              default_mode['taxi'],
+              default_mode['train'],
+              default_mode['jeepney'],
+              default_mode['bus'],
+              default_mode['other'],
+              ]
         return li
 
 class SurveyFile(models.Model):
@@ -332,6 +433,9 @@ class MainHouseholdMember(HouseholdMember):
     new_time = models.FloatField(default=0.0, null=True)
     new_cost = models.FloatField(default=0.0, null=True)
 
+    travel_distance = models.FloatField(default=0.0, null=True)
+    # rph = models.FloatField(default=0.0, null=True)
+
     @staticmethod
     def config_fields():
         return [
@@ -366,10 +470,15 @@ class MainHouseholdMember(HouseholdMember):
                 "format": ""
             },
             {
-                "name": "count",
+                "name": "Passenger Count",
                 "type": "integer",
                 "format": ""
-            }
+            },
+            {
+                "name": "Distance",
+                "type": "real",
+                "format": ""
+            },
         ]
 
 
@@ -420,7 +529,7 @@ class Amenity(models.Model):
             "Stores": "promo-alt"
         }
         li = [self.name, self.latitude, self.longitude, self.barangay.name, self.type, self.classification,
-              map[self.classification]]
+              map[self.classification], self.barangay.id]
         return li
 
     @staticmethod
@@ -458,6 +567,11 @@ class Amenity(models.Model):
             },
             {
                 "name": "icon",
+                "type": "string",
+                "format": ""
+            },
+            {
+                "name": "barangay_id",
                 "type": "string",
                 "format": ""
             }

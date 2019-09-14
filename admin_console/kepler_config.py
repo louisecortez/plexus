@@ -13,6 +13,7 @@ def json(city):
                             0,
                             100
                         ],
+                        'fixedDomain': True,
                         "enlarged": False,
                         "plotType": "histogram",
                         "yAxis": None
@@ -37,6 +38,7 @@ def json(city):
                             0,
                             0
                         ],
+                        'fixedDomain': True,
                         "enlarged": False,
                         "plotType": "histogram",
                         "yAxis": None
@@ -48,7 +50,7 @@ def json(city):
                         "type": "arc",
                         "config": {
                             "dataId": "pairs",
-                            "label": "Pairs",
+                            "label": "Origin to Destination",
                             "color": [
                                 38,
                                 26,
@@ -63,7 +65,7 @@ def json(city):
                             "isVisible": True,
                             "visConfig": {
                                 "opacity": 0.6,
-                                "thickness": 8,
+                                "thickness": 5,
                                 "colorRange": {
                                     "name": "Uber Viz Sequential 4",
                                     "type": "sequential",
@@ -106,7 +108,7 @@ def json(city):
                         },
                         "visualChannels": {
                             "colorField": {
-                                "name": "count",
+                                "name": "Passenger Count",
                                 "type": "integer"
                             },
                             "colorScale": "quantile",
@@ -233,7 +235,7 @@ def json(city):
                         },
                         "visualChannels": {
                             "colorField": None,
-                            "colorScale": "quantile",
+                            "colorScale": "quantize",
                             "sizeField": None,
                             "sizeScale": "linear"
                         }
@@ -411,7 +413,8 @@ def json(city):
                             ],
                             "outline": [],
                             "pairs": [
-                                "count"
+                                "Passenger Count",
+                                "Distance"
                             ]
                         },
                         "enabled": True
@@ -423,6 +426,23 @@ def json(city):
                 },
                 "layerBlending": "normal",
                 "splitMaps": []
+            },
+            "mapStyle": {
+                "styleType": "dark",
+                "topLayerGroups": {
+                    "road": True,
+                    "label": True
+                },
+                "visibleLayerGroups": {
+                    "label": True,
+                    "road": True,
+                    "border": False,
+                    "building": True,
+                    "water": True,
+                    "land": True,
+                    "3d building": False
+                },
+                "mapStyles": {}
             }
         }
     }

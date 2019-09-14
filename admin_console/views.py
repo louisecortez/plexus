@@ -3,7 +3,7 @@ import re
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, Max
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views import View
@@ -78,8 +78,8 @@ def getPairs(city):
 
     pairs = MainHouseholdMember.objects.filter(household__survey_file__city_id=city, dest_barangay__isnull=False,
                                                household__barangay__isnull=False).values('household__barangay',
-                                                                                         'dest_barangay').annotate(
-        o=Count('household__barangay'), d=Count('dest_barangay'))
+                                                                                         'dest_barangay', 'travel_distance').annotate(
+        o=Count('household__barangay'), d=Count('dest_barangay'), dist=Max('travel_distance'))
     # pairs = OD.objects.filter(origin__city_id=city).values('origin', 'destination').annotate(o=Count('origin'),
     #                                                                                          d=Count('destination'))
 
@@ -93,7 +93,8 @@ def getPairs(city):
                    str(p['dest_barangay']),
                    dest.latitude,
                    dest.longitude,
-                   p['d']])
+                   p['d'],
+                   round(p['dist'],4)])
     config['data']['allData'] = li
     return config
 
