@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 import django_heroku
-django_heroku.settings(locals())
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -139,6 +139,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 # # Static files (CSS, JavaScript, Images)
 # # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
@@ -156,3 +158,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 # import dj_database_url
 # prod_db  =  dj_database_url.config(conn_max_age=500)
 # DATABASES['default'].update(prod_db)
+
+django_heroku.settings(locals())
