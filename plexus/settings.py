@@ -26,7 +26,7 @@ SECRET_KEY = 'z3g)o5b(wo!f@yr_hl2a^z8p=u=gf5uhc$j@a*u)d5+h23fxjb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['transpodesire.herokuapp.com/', 'transpodesire.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 
