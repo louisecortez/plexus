@@ -137,7 +137,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -155,7 +155,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # #  Add configuration for static files storage using whitenoise
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 #
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-
-django_heroku.settings(locals())
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#
+# django_heroku.settings(locals())
