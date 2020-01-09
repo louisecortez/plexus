@@ -24,9 +24,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'z3g)o5b(wo!f@yr_hl2a^z8p=u=gf5uhc$j@a*u)d5+h23fxjb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['transpodesire.herokuapp.com/']
+ALLOWED_HOSTS = ['transpodesire.herokuapp.com/', 'transpodesire.herokuapp.com', '127.0.0.1', 'localhost']
+
+import dj_database_url
+
+DATABASES = { 'default' : dj_database_url.config()}
 
 
 # Application definition
@@ -83,11 +87,11 @@ WSGI_APPLICATION = 'plexus.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plexus2',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        # 'NAME': 'plexus2',
+        # 'USER': 'postgres',
+        # 'PASSWORD': '1234',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '5432',
     }
 }
 
