@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <title>PLEXUS - Manage Cities</title>
+</head>
+<body>
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
+    <div class="w3-right w3-hide-small">
+        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
+        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
+    </div>
+  </div>
+
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
+</div>
+
+<div class="cities-page">
+    <h2 class="cities-header">{{ province.region.name }} - {{ province.name }}</h2>
+    <hr>
+
+    <form id="form" method="post">
+    {% csrf_token %}
+    <div class="cities-container">
+        {% for city in province.cities %}
+            <div class="cities-content-items">
+                <div class="cities-left">{{ city.name }}</div>
+                <div class="cities-right">
+                    <input type="checkbox" class="city-checkbox" name="cities" value="{{city.id}}" {% if city.is_active %}checked{% endif %}>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <input type="submit" class="btn-save" value="Save">
+    </form>
+</div>
+</body>
+</html>

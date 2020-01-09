@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/css/styles.css"/>
+    <title>PLEXUS - Manage Provinces</title>
+</head>
+<body>
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="/" class="w3-bar-item w3-button">PLEXUS Admin |</a>
+    <div class="w3-right w3-hide-small">
+        <a href="/upload" class="w3-bar-item w3-button">Upload Data</a>
+        <a href="/cities" class="w3-bar-item w3-button">Manage Cities</a>
+        <a href="/users" class="w3-bar-item w3-button">Manage Users</a>
+    </div>
+  </div>
+
+    <div class="dropdown header-right">Hello, username!
+        <button class="dropbtn">
+          <i class="arrow down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="/accounts/logout">Logout</a>
+        </div>
+  </div>
+</div>
+
+<div class="province-page">
+    <div class="province-row">
+    {% for region in regions %}
+        <div class="province-column">
+        <div class="card">
+            <div class="card-header">{{ region.name }}</div>
+            <div class="province-container">
+                {% for province in region.provinces %}
+                    <a class="province-link" href="{{ province.id }}/"><p class="province-name">{{ province.name }}</p></a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</body>
+</html>
