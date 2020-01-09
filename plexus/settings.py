@@ -28,9 +28,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['transpodesire.herokuapp.com/', 'transpodesire.herokuapp.com', '127.0.0.1', 'localhost']
 
-import dj_database_url
 
-DATABASES = { 'default' : dj_database_url.config()}
 
 
 # Application definition
@@ -83,17 +81,19 @@ WSGI_APPLICATION = 'plexus.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+import dj_database_url
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'plexus2',
-        # 'USER': 'postgres',
-        # 'PASSWORD': '1234',
-        # 'HOST': '127.0.0.1',
-        # 'PORT': '5432',
-    }
-}
+DATABASES = { 'default' : dj_database_url.config()}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         # 'NAME': 'plexus2',
+#         # 'USER': 'postgres',
+#         # 'PASSWORD': '1234',
+#         # 'HOST': '127.0.0.1',
+#         # 'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
